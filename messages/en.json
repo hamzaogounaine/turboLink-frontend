@@ -1,0 +1,45 @@
+{
+  "navbar": {
+    "home": "Home",
+    "login": "Login",
+    "signup": "Sign Up",
+    "profile" : "Profile",
+    "settings" : "Settings"
+  },
+  "login": {
+    "title": "Log in to your account",
+    "subtitle": "Enter your email and password below.",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Login",
+    "loadingText": "Loading",
+    "socialLogin": "Login with {{provider}}",
+    "forgotPassword": "Forgot your password?",
+    "noAccount_prefix": "Don't have an account?",
+    "noAccount_link": "Sign Up"
+  },
+  "signup": {
+    "title": "Create a new account",
+    "subtitle": "Enter your credentials below to create your account.",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "submit": "Sign Up",
+    "loadingText": "Loading",
+    "socialSignup": "Sign Up with {{provider}}",
+    "haveAccount_prefix": "Already have an account?",
+    "haveAccount_link": "Login"
+  },
+  "errors": {
+    "invalidCredentials": "Invalid email or password.",
+    "required": "This field is required.",
+    "emailInvalid": "Email is not valid.",
+    "passwordMinLength": "Password must contain at least 6 characters.",
+    "confirmPasswordRequired": "Password confirmation is required.",
+    "passwordsMustMatch": "Passwords must match.",
+    "usernameUnique": "This username is already taken.",
+    "emailUnique": "This email is already taken.",
+    "unexpectedError": "An unexpected error occurred."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "navbar": {
+    "home": "Accueil",
+    "login": "Connexion",
+    "signup": "Inscription",
+    "profile" : "Profile",
+    "settings" : "Parametre"
+  },
+  "login": {
+    "title": "Connectez-vous à votre compte",
+    "subtitle": "Entrez votre email et votre mot de passe ci-dessous.",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "submit": "Connexion",
+    "loadingText": "Chargement",
+    "socialLogin": "Se connecter avec {{provider}}",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount_prefix": "Vous n'avez pas de compte ?",
+    "noAccount_link": "S'inscrire"
+  },
+  "signup": {
+    "title": "Créer un nouveau compte",
+    "subtitle": "Entrez vos identifiants ci-dessous pour créer votre compte.",
+    "username": "Nom d'utilisateur",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "submit": "S'inscrire",
+    "loadingText": "Chargement",
+    "socialSignup": "S'inscrire avec {{provider}}",
+    "haveAccount_prefix": "Vous avez déjà un compte ?",
+    "haveAccount_link": "Connexion"
+  },
+  "errors": {
+    "invalidCredentials": "E-mail ou mot de passe invalide.",
+    "required": "Ce champ est requis.",
+    "emailInvalid": "L'e-mail n'est pas valide.",
+    "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères.",
+    "confirmPasswordRequired": "La confirmation du mot de passe est requise.",
+    "passwordsMustMatch": "Les mots de passe doivent correspondre.",
+    "usernameUnique": "Ce nom d'utilisateur est déjà pris.",
+    "emailUnique": "Cet e-mail est déjà utilisé.",
+    "unexpectedError": "Une erreur inattendue est survenue."
+  }
+}

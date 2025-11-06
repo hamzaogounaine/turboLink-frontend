@@ -1,0 +1,45 @@
+{
+  "navbar": {
+    "home": "الرئيسية",
+    "login": "تسجيل الدخول",
+    "signup": "إنشاء حساب",
+    "profile" : "الحساب",
+    "settings" : "الاعدادات"
+  },
+  "login": {
+    "title": "سجّل الدخول إلى حسابك",
+    "subtitle": "أدخل بريدك الإلكتروني وكلمة المرور أدناه.",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "submit": "تسجيل الدخول",
+    "loadingText": "جارٍ التحميل",
+    "socialLogin": "تسجيل الدخول باستخدام {{provider}}",
+    "forgotPassword": "هل نسيت كلمة المرور؟",
+    "noAccount_prefix": "ليس لديك حساب؟",
+    "noAccount_link": "إنشاء حساب"
+  },
+  "signup": {
+    "title": "إنشاء حساب جديد",
+    "subtitle": "أدخل بيانات اعتمادك أدناه لإنشاء حسابك.",
+    "username": "اسم المستخدم",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "submit": "إنشاء حساب",
+    "loadingText": "جارٍ التحميل",
+    "socialSignup": "إنشاء حساب باستخدام {{provider}}",
+    "haveAccount_prefix": "هل لديك حساب بالفعل؟",
+    "haveAccount_link": "تسجيل الدخول"
+  },
+  "errors": {
+    "invalidCredentials": "بريد إلكتروني أو كلمة مرور غير صالحة.",
+    "required": "هذا الحقل مطلوب.",
+    "emailInvalid": "البريد الإلكتروني غير صالح.",
+    "passwordMinLength": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل.",
+    "confirmPasswordRequired": "تأكيد كلمة المرور مطلوب.",
+    "passwordsMustMatch": "يجب أن تتطابق كلمات المرور.",
+    "usernameUnique": "اسم المستخدم هذا مُستخدم بالفعل.",
+    "emailUnique": "البريد الإلكتروني هذا مُستخدم بالفعل.",
+    "unexpectedError": "حدث خطأ غير متوقع."
+  }
+}
