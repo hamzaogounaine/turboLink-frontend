@@ -55,8 +55,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (token, message) => {
     toast.success(message);
     setAccessToken(token)
+    setAuthToken(token)
     await fetchSession()
-    setIsAuthenticated(true)
   };
 
   const fetchSession = async () => {
