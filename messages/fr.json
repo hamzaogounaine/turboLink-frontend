@@ -72,6 +72,23 @@
     "bioPlaceholder": "Parlez-nous de vous",
     "saveButton": "Enregistrer les modifications"
   },
+  "profileCard": {
+    "statusVerified": "Vérifié",
+    "statusPending": "Vérification en attente",
+    "resendButton": "Renvoyer le lien de vérification",
+    "locationUnknown": "Lieu inconnu",
+    "joinedPrefix": "Membre depuis le"
+  },
+  "emailVerification": {
+    "heading": "Statut de la vérification de l'e-mail",
+    "statusLoading": "Vérification de votre adresse e-mail en cours. Veuillez patienter...",
+    "statusSuccess": "Succès ! Votre e-mail a été vérifié. Vous pouvez vous connecter.",
+    "statusAlreadyVerified": "Cet e-mail est déjà vérifié. Vous pouvez vous connecter.",
+    "statusFailure": "Échec de la vérification. Le lien est peut-être expiré ou invalide.",
+    "errorInvalidToken": "Échec de la vérification. Le lien est invalide ou a expiré.",
+    "errorNoToken": "Accès refusé. Vous devez utiliser le lien envoyé à votre e-mail.",
+    "linkToLogin": "Aller à la page de connexion"
+  },
   "errors": {
     "shortUsername": "Le nom d'utilisateur doit contenir au moins 3 caractères.",
     "required": "Ce champ est obligatoire.",

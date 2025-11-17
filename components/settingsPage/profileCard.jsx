@@ -13,6 +13,7 @@ import { useTranslations } from "next-intl";
 
 const ProfileCard = ({user}) => {
   const [isResending, setIsResending] = useState(false);
+  const [hasSent , setHasSent] = useState(false)
   const t = useTranslations('profileCard'); 
   const tNotif = useTranslations('notifications');
 
@@ -40,6 +41,7 @@ const ProfileCard = ({user}) => {
       toast.dismiss(); 
       console.log(response)
       if (response.status === 200) {
+        setHasSent(true)
         toast.success(
           data.message || tNotif("verificationSuccess")
         );
@@ -91,7 +93,7 @@ const ProfileCard = ({user}) => {
                     </span>
                 </div>
                 
-                {!user.is_email_verified && (
+                {!user.is_email_verified && !hasSent && (
                     <Button 
                         // Use outline variant for lower visual hierarchy
                         variant="outline" 
@@ -104,6 +106,7 @@ const ProfileCard = ({user}) => {
                         {t('resendButton')}
                     </Button>
                 )}
+                {hasSent && <p className="text-sm text-green-500">{tNotif('verificationSuccess')}</p>}
             </div>
             
             <div className="flex items-center gap-2 text-sm text-muted-foreground">

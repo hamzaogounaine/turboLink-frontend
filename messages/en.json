@@ -72,6 +72,23 @@
     "bioPlaceholder": "Tell us about yourself",
     "saveButton": "Save Changes"
   },
+  "profileCard": {
+    "statusVerified": "Verified",
+    "statusPending": "Pending Verification",
+    "resendButton": "Resend Verification Link",
+    "locationUnknown": "Location Unknown",
+    "joinedPrefix": "Joined on"
+  },
+  "emailVerification": {
+    "heading": "Email Verification Status",
+    "statusLoading": "Verifying your email address. Please wait...",
+    "statusSuccess": "Success! Your email has been verified. You can now log in.",
+    "statusAlreadyVerified": "This email is already verified. You can now log in.",
+    "statusFailure": "Verification Failed. The link may be expired or invalid.",
+    "errorInvalidToken": "Verification Failed. The link is invalid or has expired.",
+    "errorNoToken": "Access Denied. You must use the link sent to your email.",
+    "linkToLogin": "Go to Login Page"
+  },
   "errors": {
     "shortUsername": "Username must contain at least 3 characters.",
     "required": "This field is required.",
@@ -86,6 +103,7 @@
     "noCodeProvided": "The verification code cannot be empty.",
     "noUserFound": "User not found. This verification link may be invalid.",
     "invalidCode": "The verification code is incorrect. Please check your email again.",
-    "codeExpired": "The verification code has expired. Please request a new one."
+    "codeExpired": "The verification code has expired. Please request a new one.",
+    "error_network" : "A network error occurred. Please check your connection."
   }
 }
