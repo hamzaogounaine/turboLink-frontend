@@ -49,14 +49,17 @@
     "error_network": "Une erreur réseau est survenue. Veuillez vérifier votre connexion.",
     "error_invalid_length": "Le code doit comporter 6 chiffres.",
     "error_generic": "La vérification a échoué. Veuillez réessayer ou renvoyer le code.",
-    "deviceVerified": "Appareil vérifié avec succès." 
+    "deviceVerified": "Appareil vérifié avec succès."
   },
   "notifications": {
     "sendingVerification": "Envoi de l'e-mail de vérification...",
     "verificationSuccess": "E-mail de vérification envoyé avec succès ! Vérifiez votre boîte de réception.",
     "verificationFailure": "Échec de l'envoi de l'e-mail de vérification. Veuillez réessayer plus tard.",
     "profileUpdated": "Profil mis à jour",
-    "profileUpdateFailure": "Échec de la mise à jour du profil. Veuillez réessayer plus tard."
+    "profileUpdateFailure": "Échec de la mise à jour du profil. Veuillez réessayer plus tard.",
+    "validationError": "Veuillez remplir tous les champs obligatoires.",
+    "passwordRequired": "Le mot de passe est requis pour enregistrer les modifications.",
+    "passwordIncorrect": "Mot de passe incorrect."
   },
   "profileTab": {
     "heading": "Informations de profil",
@@ -70,7 +73,13 @@
     "phonePlaceholder": "Entrez le numéro de téléphone",
     "bioLabel": "Biographie",
     "bioPlaceholder": "Parlez-nous de vous",
-    "saveButton": "Enregistrer les modifications"
+    "saveButton": "Enregistrer les modifications",
+    "securityCheckTitle": "Vérification de sécurité",
+    "securityCheckDesc": "Veuillez saisir votre mot de passe pour confirmer ces changements.",
+    "passwordLabel": "Mot de passe actuel",
+    "cancelButton": "Annuler",
+    "confirmButton": "Confirmer",
+    "verifying": "Vérification..."
   },
   "profileCard": {
     "statusVerified": "Vérifié",
@@ -104,6 +113,6 @@
     "noUserFound": "Utilisateur introuvable. Ce lien de vérification est peut-être invalide.",
     "invalidCode": "Le code de vérification est incorrect. Veuillez vérifier à nouveau votre e-mail.",
     "codeExpired": "Le code de vérification a expiré. Veuillez en demander un nouveau.",
-    "error_network" :"Une erreur réseau est survenue. Veuillez vérifier votre connexion."
+    "error_network": "Une erreur réseau est survenue. Veuillez vérifier votre connexion."
   }
 }

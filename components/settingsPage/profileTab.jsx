@@ -1,131 +1,197 @@
 "use client";
 
-import React, { use, useState } from 'react'
+import React, { useState } from 'react'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+// 💥 You need these imports for the modal
+import {
+  
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog" 
 import api from '@/lib/api'
 import { toast } from 'sonner'
-import { useTranslations } from 'next-intl' // Import added
+import { useTranslations } from 'next-intl'
 
-const ProfileTab = ({user}) => {
+const ProfileTab = ({ user }) => {
   const t = useTranslations('profileTab')
   const tNotif = useTranslations('notifications')
   
-  const [firstName , setFirstName] = useState(user.first_name)
-  const [lastName , setLastName] = useState(user.last_name)
-  const [email , setEmail] = useState(user.email)
-  const [phoneNumber , setPhoneNumber] = useState(user.phone_number)
+  // State Management
+  const [firstName, setFirstName] = useState(user.first_name || '')
+  const [lastName, setLastName] = useState(user.last_name || '')
+  const [email, setEmail] = useState(user.email || '')
+  const [phoneNumber, setPhoneNumber] = useState(user.phone_number || '')
+  // 💥 FIX: Added state for Bio. It was missing before.
+  const [bio, setBio] = useState(user.bio || '') 
+  
+  // Modal & Loading State
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async () => {
+  // 1. Triggered when user clicks "Save Changes"
+  const handlePreSubmit = () => {
+    // 💥 STRICTNESS: Add validation here. Don't open the modal if the email is invalid.
+    if (!firstName || !lastName || !email) {
+      toast.error(tNotif('validationError')) // Ensure you have this key
+      return
+    }
+    setIsPasswordModalOpen(true)
+  }
+
+  // 2. Triggered when user confirms password in modal
+  const handleFinalSubmit = async () => {
+    if (!password) {
+        toast.error(tNotif('passwordRequired')) 
+        return
+    }
+
     setLoading(true)
     try {
-      const res = await api.post('/update-profile' , {userId : user._id , firstName,lastName,email,phoneNumber})
-      if(res.status === 200) {
-        // 💥 Translated Success Toast
+      // 💥 We send the password along with the data to verify ownership
+      const payload = {
+        userId: user._id,
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        password // 💥 Verify this on the backend!
+      }
+
+      const res = await api.post('/update-profile', payload)
+
+      if (res.status === 200) {
         toast.success(tNotif('profileUpdated'))
+        setIsPasswordModalOpen(false) // Close modal on success
+        setPassword('') // Clear sensitive data
       } else {
-        // 💥 Added Error handling for non-200 responses
         toast.error(tNotif('profileUpdateFailure'))
       }
-    }
-     catch (err) {
-      console.log(err)
-      // 💥 Translated Error Toast (Crucial addition)
-      toast.error(tNotif('profileUpdateFailure'))
-     }
-     finally {
+    } catch (err) {
+      if(err.response.data.message) {
+        toast.error(tNotif(err.response.data.message))
+      }
+      else{
+
+        toast.error(tNotif('profileUpdateFailure'))
+      }
+    } finally {
       setLoading(false)
-     }
+    }
   }
 
   return (
     <div className="space-y-6">
-    {/* 💥 Translated Heading */}
-    <h3 className="text-lg font-semibold text-foreground">{t('heading')}</h3>
+      <h3 className="text-lg font-semibold text-foreground">{t('heading')}</h3>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="first-name">{t('firstNameLabel')}</Label>
+          <Input
+            id="first-name"
+            value={firstName} // 💥 Controlled component (value vs defaultValue)
+            className="mt-1"
+            placeholder={t('firstNamePlaceholder')}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="last-name">{t('lastNameLabel')}</Label>
+          <Input
+            id="last-name"
+            value={lastName}
+            className="mt-1"
+            placeholder={t('lastNamePlaceholder')}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </div>
+      </div>
+
       <div>
-        {/* 💥 Translated Label 1 */}
-        <Label htmlFor="first-name" className="text-foreground">
-          {t('firstNameLabel')}
-        </Label>
+        <Label htmlFor="email">{t('emailLabel')}</Label>
         <Input
-          id="first-name"
-          defaultValue={firstName}
-          className="mt-1 bg-input border-border"
-          // 💥 Translated Placeholder 1
-          placeholder={t('firstNamePlaceholder')}
-          onChange={(e) => setFirstName(e.target.value)}
+          id="email"
+          type="email"
+          value={email}
+          className="mt-1"
+          placeholder={t('emailPlaceholder')}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
+
       <div>
-        {/* 💥 Translated Label 2 */}
-        <Label htmlFor="last-name" className="text-foreground">
-          {t('lastNameLabel')}
-        </Label>
+        <Label htmlFor="phone">{t('phoneLabel')}</Label>
         <Input
-          id="last-name"
-          defaultValue={lastName}
-          className="mt-1 bg-input border-border"
-          // 💥 Translated Placeholder 2
-          placeholder={t('lastNamePlaceholder')}
-          onChange={(e) => setLastName(e.target.value)}
+          id="phone"
+          type="text" // 'string' is not a valid HTML input type
+          value={phoneNumber}
+          className="mt-1"
+          placeholder={t('phonePlaceholder')}
+          onChange={(e) => setPhoneNumber(e.target.value)}
         />
       </div>
-    </div>
 
-    <div>
-      {/* 💥 Translated Label 3 */}
-      <Label htmlFor="email" className="text-foreground">
-        {t('emailLabel')}
-      </Label>
-      <Input
-        id="email"
-        type="email"
-        defaultValue={email}
-        className="mt-1 bg-input border-border"
-        // 💥 Translated Placeholder 3
-        placeholder={t('emailPlaceholder')}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-    </div>
+      <div>
+        <Label htmlFor="bio">{t('bioLabel')}</Label>
+        <textarea
+          id="bio"
+          value={bio} // 💥 Now controlled properly
+          className="mt-1 w-full px-3 py-2 rounded-md border border-border bg-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+          rows={4}
+          placeholder={t('bioPlaceholder')}
+          onChange={(e) => setBio(e.target.value)} // 💥 Added onChange
+        />
+      </div>
 
-    <div>
-      {/* 💥 Translated Label 4 */}
-      <Label htmlFor="phone" className="text-foreground">
-        {t('phoneLabel')}
-      </Label>
-      <Input
-        id="phone"
-        type="string"
-        defaultValue={phoneNumber}
-        className="mt-1 bg-input border-border"
-        // 💥 Translated Placeholder 4
-        placeholder={t('phonePlaceholder')}
-        onChange={(e) => setPhoneNumber(e.target.value)}
-      />
-    </div>
+      {/* Initial Save Button */}
+      <Button 
+        className="bg-primary hover:bg-primary/90 text-primary-foreground" 
+        disabled={loading} 
+        onClick={handlePreSubmit} // Opens modal
+      >
+        {t('saveButton')}
+      </Button>
 
-    <div>
-      {/* 💥 Translated Label 5 */}
-      <Label htmlFor="bio" className="text-foreground">
-        {t('bioLabel')}
-      </Label>
-      <textarea
-        id="bio"
-        defaultValue={user.bio || null}
-        className="mt-1 w-full px-3 py-2 rounded-md border border-border bg-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-        rows={4}
-        // 💥 Translated Placeholder 5
-        placeholder={t('bioPlaceholder')}
-      />
+      {/* 💥 Password Confirmation Modal */}
+      <Dialog open={isPasswordModalOpen} onOpenChange={setIsPasswordModalOpen} className={'absolute inset-0'}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{t('securityCheckTitle') || 'Security Check'}</DialogTitle>
+            <DialogDescription>
+              {t('securityCheckDesc') || 'Please enter your password to confirm these changes.'}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="confirm-password" className="text-right">
+                {t('passwordLabel') || 'Password'}
+              </Label>
+              <Input
+                id="confirm-password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsPasswordModalOpen(false)}>
+                {t('cancelButton') || 'Cancel'}
+            </Button>
+            <Button type="submit" onClick={handleFinalSubmit} disabled={loading}>
+              {loading ? t('verifying') || 'Verifying...' : t('confirmButton') || 'Confirm'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
-
-    {/* 💥 Translated Button Text */}
-    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground" disabled={loading} onClick={handleSubmit}>{t('saveButton')}</Button>
-  </div>
   )
 }
 

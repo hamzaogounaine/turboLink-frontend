@@ -56,7 +56,10 @@
     "verificationSuccess": "Verification email sent successfully! Check your inbox.",
     "verificationFailure": "Failed to send verification email. Try again later.",
     "profileUpdated": "Profile updated",
-    "profileUpdateFailure": "Failed to update profile. Try again later."
+    "profileUpdateFailure": "Failed to update profile. Try again later.",
+    "validationError": "Please fill in all required fields.",
+    "passwordRequired": "Password is required to save changes.",
+    "passwordIncorrect": "Incorrect password provided."
   },
   "profileTab": {
     "heading": "Profile Information",
@@ -70,7 +73,13 @@
     "phonePlaceholder": "Enter phone",
     "bioLabel": "Bio",
     "bioPlaceholder": "Tell us about yourself",
-    "saveButton": "Save Changes"
+    "saveButton": "Save Changes",
+    "securityCheckTitle": "Security Check",
+    "securityCheckDesc": "Please enter your password to confirm these changes.",
+    "passwordLabel": "Current Password",
+    "cancelButton": "Cancel",
+    "confirmButton": "Confirm",
+    "verifying": "Verifying..."
   },
   "profileCard": {
     "statusVerified": "Verified",
@@ -104,6 +113,6 @@
     "noUserFound": "User not found. This verification link may be invalid.",
     "invalidCode": "The verification code is incorrect. Please check your email again.",
     "codeExpired": "The verification code has expired. Please request a new one.",
-    "error_network" : "A network error occurred. Please check your connection."
+    "error_network": "A network error occurred. Please check your connection."
   }
 }
