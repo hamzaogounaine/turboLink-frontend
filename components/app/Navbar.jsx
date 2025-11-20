@@ -35,7 +35,7 @@ const SUPPORTED_LOCALES = [
 
 // NOTE: I'm adding a Logout link here for a complete authenticated experience
 const navLinks = [
-  { title: "home", icon: HomeIcon, href: "/" },
+  { title: "home", icon: HomeIcon, href: "/dashboard" },
   // These links should ONLY show when the user is NOT logged in.
   { title: "login", icon: LogIn, href: "/login", hideOnAuth: true },
   { title: "signup", icon: UserPlus, href: "/signup", hideOnAuth: true },
@@ -45,33 +45,20 @@ const navLinks = [
 
 const Navbar = () => {
   const t = useTranslations("navbar");
-const { user, logout } = useAuth(); // Assume 'user' is the authentication state
+const { user, logout } = useAuth(); 
   const router = useRouter();
   const pathname = usePathname();
   const currentLocale = useLocale();
 
-  /**
-   * FIX: Determines if a navigation link should be hidden.
-   * If `nav.hideOnAuth` is true, hide the link if the user is logged in.
-   * @param {boolean} hideOnAuth - Indicates if the link should be hidden when authenticated.
-   * @returns {boolean} True if the link should be hidden, false otherwise.
-   */
+ 
   const shouldHide = (hideOnAuth) => {
-    // Hide 'Login' and 'Signup' links if the user IS logged in.
     if (hideOnAuth && user) {
       return true;
     }
-    // You could add logic here for links that should ONLY show when logged in:
-    // if (showOnAuth && !user) {
-    //    return true;
-    // }
     return false;
   };
 
-  // Function to handle locale change
   const onLocaleChange = (newLocale) => {
-    // pathname starts with the locale, e.g., /en/login
-    // We replace the first two characters (e.g., '/e') with the new locale
     const newPathname = `/${newLocale}${pathname.substring(3)}`;
     router.replace(newPathname);
   };

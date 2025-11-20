@@ -79,7 +79,7 @@ const ProfileCard = ({ user }) => {
     const file = e.target.files[0];
     if (file) {
         if (file.size > 5 * 1024 * 1024) {
-            toast.error("File too large (Max 5MB)");
+          toast.error(tNotif("fileTooLarge"));
             return;
         }
         setSelectedFile(file);
@@ -95,7 +95,7 @@ const ProfileCard = ({ user }) => {
       // STRATEGY A: Upload Local File to S3/Cloudinary first
       if (uploadType === 'local') {
         if (!selectedFile) {
-          toast.error("Please select a file first.");
+          toast.error(tNotif("fileNotSelected"));
           setLoading(false);
           return;
         }
@@ -118,7 +118,7 @@ const ProfileCard = ({ user }) => {
       // STRATEGY B: Use Direct URL
       else if (uploadType === 'url') {
         if (!avatarUrlInput || !avatarUrlInput.startsWith('http')) {
-             toast.error("Please enter a valid URL.");
+             toast.error(tNotif('invalidUrl'));
              setLoading(false);
              return;
         }

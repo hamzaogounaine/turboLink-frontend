@@ -59,7 +59,10 @@
     "profileUpdateFailure": "Échec de la mise à jour du profil. Veuillez réessayer plus tard.",
     "validationError": "Veuillez remplir tous les champs obligatoires.",
     "passwordRequired": "Le mot de passe est requis pour enregistrer les modifications.",
-    "passwordIncorrect": "Mot de passe incorrect."
+    "passwordIncorrect": "Mot de passe incorrect.",
+    "fileTooLarge" : "Le fichier est trop volumineux (Max 5 Mo).",
+    "fileNotSelected" : "Veuillez sélectionner un fichier d'abord.",
+    "invalidUrl" : "Veuillez saisir une URL valide."
   },
   "profileTab": {
     "heading": "Informations de profil",
@@ -86,7 +89,9 @@
     "statusPending": "Vérification en attente",
     "resendButton": "Renvoyer le lien de vérification",
     "locationUnknown": "Lieu inconnu",
-    "joinedPrefix": "Membre depuis le"
+    "joinedPrefix": "Membre depuis le",
+    "changeAvatarTitle": "Changer l'image de profil",
+  "changeAvatarDesc": "Choisissez comment vous souhaitez mettre à jour votre image de profil."
   },
   "emailVerification": {
     "heading": "Statut de la vérification de l'e-mail",

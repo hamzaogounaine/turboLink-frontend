@@ -59,7 +59,10 @@
     "profileUpdateFailure": "Failed to update profile. Try again later.",
     "validationError": "Please fill in all required fields.",
     "passwordRequired": "Password is required to save changes.",
-    "passwordIncorrect": "Incorrect password provided."
+    "passwordIncorrect": "Incorrect password provided.",
+    "fileTooLarge" : "File is too large (Max 5MB).",
+    "fileNotSelected" : "Please select a file first.",
+    "invalidUrl" : "Please enter a valid URL."
   },
   "profileTab": {
     "heading": "Profile Information",
@@ -86,7 +89,9 @@
     "statusPending": "Pending Verification",
     "resendButton": "Resend Verification Link",
     "locationUnknown": "Location Unknown",
-    "joinedPrefix": "Joined on"
+    "joinedPrefix": "Joined on",
+    "changeAvatarTitle": "Change Profile Picture",
+    "changeAvatarDesc": "Choose how you want to update your profile picture."
   },
   "emailVerification": {
     "heading": "Email Verification Status",

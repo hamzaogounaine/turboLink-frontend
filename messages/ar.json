@@ -60,7 +60,10 @@
     "profileUpdateFailure": "فشل تحديث الملف الشخصي. حاول مرة أخرى لاحقاً.",
     "validationError": "يرجى ملء جميع الحقول المطلوبة.",
     "passwordRequired": "كلمة المرور مطلوبة لحفظ التغييرات.",
-    "passwordIncorrect": "كلمة المرور غير صحيحة."
+    "passwordIncorrect": "كلمة المرور غير صحيحة.",
+    "fileTooLarge" : "حجم الملف كبير جداً (حد أقصى 5 ميجابايت).",
+    "fileNotSelected" : "يرجى تحديد ملف أولاً.",
+    "invalidUrl" : "يرجى إدخال رابط صالح."
   },
   "profileTab": {
     "heading": "معلومات الملف الشخصي",
@@ -87,7 +90,9 @@
     "statusPending": "في انتظار التحقق",
     "resendButton": "إعادة إرسال رابط التحقق",
     "locationUnknown": "الموقع غير معروف",
-    "joinedPrefix": "انضم في"
+    "joinedPrefix": "انضم في",
+    "changeAvatarTitle": "تغيير صورة الملف الشخصي",
+  "changeAvatarDesc": "اختر كيف تريد تحديث صورتك الشخصية."
   },
   "emailVerification": {
     "heading": "حالة التحقق من البريد الإلكتروني",

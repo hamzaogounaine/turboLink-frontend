@@ -45,7 +45,7 @@ export default function LocaleLayout({ children }) {
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        
       >
         <NextIntlClientProvider>
           <AuthProvider>
