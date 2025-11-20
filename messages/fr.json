@@ -103,6 +103,25 @@
     "errorNoToken": "Accès refusé. Vous devez utiliser le lien envoyé à votre e-mail.",
     "linkToLogin": "Aller à la page de connexion"
   },
+  "forgotPassword": {
+    "title": "Réinitialisation du mot de passe",
+    "subtitle": "Entrez l'adresse e-mail associée à votre compte. Nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+    "email": "Adresse E-mail",
+    "submit": "Envoyer le lien de réinitialisation",
+    "sending" : "Envoi en cours...",
+    "successMessage": "Succès ! Vérifiez votre boîte de réception pour un lien de réinitialisation du mot de passe. Si vous ne recevez pas d'e-mail dans quelques minutes, veuillez vérifier votre dossier de spam.",
+    "errorMessage": "Échec du traitement de la demande. Veuillez vérifier l'e-mail et réessayer."
+  },
+  "passwordReset": {
+    "title": "Définir un Nouveau Mot de Passe",
+    "subtitle": "Veuillez saisir votre nouveau mot de passe ci-dessous.",
+    "password": "Nouveau Mot de Passe",
+    "confirmPassword": "Confirmer le Mot de Passe",
+    "submit": "Définir le Mot de Passe",
+    "sending": "Définition du mot de passe en cours...",
+    "validationLength": "Le mot de passe doit comporter au moins 6 caractères.",
+    "validationMatch": "Les mots de passe ne correspondent pas. Veuillez vérifier votre saisie."
+},
   "errors": {
     "shortUsername": "Le nom d'utilisateur doit contenir au moins 3 caractères.",
     "required": "Ce champ est obligatoire.",
@@ -119,5 +138,11 @@
     "invalidCode": "Le code de vérification est incorrect. Veuillez vérifier à nouveau votre e-mail.",
     "codeExpired": "Le code de vérification a expiré. Veuillez en demander un nouveau.",
     "error_network": "Une erreur réseau est survenue. Veuillez vérifier votre connexion."
-  }
+  },
+  "unauthorized": {
+    "unauthorizedTitle": "Accès Refusé", 
+    "unauthorizedSubtitle": "Vous n'avez pas l'autorisation d'afficher cette page. Veuillez vous connecter à un compte autorisé.",
+    "loginButton": "Se connecter / S'inscrire",
+    "homeButton": "Aller à la page d'accueil"
+}
 }

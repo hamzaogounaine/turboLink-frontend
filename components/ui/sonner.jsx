@@ -6,6 +6,7 @@ import {
   Loader2Icon,
   OctagonXIcon,
   TriangleAlertIcon,
+  XCircleIcon,
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner";
@@ -25,7 +26,7 @@ const Toaster = ({
         success: <CircleCheckIcon className="size-5" />,
         info: <InfoIcon className="size-5" />,
         warning: <TriangleAlertIcon className="size-5" />,
-        error: <OctagonXIcon className="size-5" />,
+        error: <XCircleIcon className="size-5" />,
         loading: <Loader2Icon className="size-5 animate-spin" />,
       }}
       style={

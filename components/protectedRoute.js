@@ -4,6 +4,7 @@ import {  useSearchParams , useRouter } from "next/navigation"; // <-- Use useSe
 import { useAuth } from "../context/userContext";
 import LoaderComponent from "./ui/Loader";
 import { setAuthToken } from "@/lib/api";
+import UnauthorizedPage from "./Unauthorized";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading , isAuthenticated } = useAuth();
@@ -43,7 +44,7 @@ const ProtectedRoute = ({ children }) => {
   // If loading is done and there's no user, show unauthorized message 
   // (though the useEffect should redirect immediately)
   if (!user && !loading) {
-    return <p>Unauthorized</p>;
+    return <UnauthorizedPage />
   }
 
   // Render children if the user is authenticated

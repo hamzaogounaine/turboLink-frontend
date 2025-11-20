@@ -60,9 +60,9 @@
     "validationError": "Please fill in all required fields.",
     "passwordRequired": "Password is required to save changes.",
     "passwordIncorrect": "Incorrect password provided.",
-    "fileTooLarge" : "File is too large (Max 5MB).",
-    "fileNotSelected" : "Please select a file first.",
-    "invalidUrl" : "Please enter a valid URL."
+    "fileTooLarge": "File is too large (Max 5MB).",
+    "fileNotSelected": "Please select a file first.",
+    "invalidUrl": "Please enter a valid URL."
   },
   "profileTab": {
     "heading": "Profile Information",
@@ -103,6 +103,25 @@
     "errorNoToken": "Access Denied. You must use the link sent to your email.",
     "linkToLogin": "Go to Login Page"
   },
+  "forgotPassword": {
+    "title": "Reset Password",
+    "subtitle": "Enter the email address associated with your account. We will send you a link to reset your password.",
+    "email": "Email Address",
+    "submit": "Send Reset Link",
+    "sending": "Sending...",
+    "successMessage": "Success! Check your inbox for a password reset link. If you don't receive an email within a few minutes, please check your spam folder.",
+    "errorMessage": "Failed to process the request. Please check the email and try again."
+  },
+  "passwordReset": {
+    "title": "Set New Password",
+    "subtitle": "Enter your new password below.",
+    "password": "New Password",
+    "confirmPassword": "Confirm Password",
+    "submit": "Set Password",
+    "sending": "Setting Password...",
+    "validationLength": "Password must be at least 6 characters.",
+    "validationMatch": "The passwords do not match. Please check your input."
+  },
   "errors": {
     "shortUsername": "Username must contain at least 3 characters.",
     "required": "This field is required.",
@@ -119,5 +138,11 @@
     "invalidCode": "The verification code is incorrect. Please check your email again.",
     "codeExpired": "The verification code has expired. Please request a new one.",
     "error_network": "A network error occurred. Please check your connection."
-  }
+  },
+ "unauthorized": {
+    "unauthorizedTitle": "Access Denied", 
+    "unauthorizedSubtitle": "You do not have permission to view this page. Please log in to an authorized account.",
+    "loginButton": "Login / Sign Up",
+    "homeButton": "Go to Homepage"
+}
 }
