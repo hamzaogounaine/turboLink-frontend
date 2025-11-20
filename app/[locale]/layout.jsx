@@ -1,4 +1,3 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 // NOTE: Removed unused 'hasLocale', 'routing', and 'notFound' imports
 import { NextIntlClientProvider } from "next-intl"; 
@@ -6,21 +5,7 @@ import { AuthProvider } from '../../context/userContext';
 import Navbar from "../../components/app/Navbar";
 import { Toaster } from "@/components/ui/sonner";
 
-// --- TYPE DEFINITION ---
 
-// Define the exact type for the Layout component props
-// Since you only need 'children', PropsWithChildren is enough.
-
-// --- FONT DEFINITIONS ---
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 // --- METADATA ---
 export const metadata = {

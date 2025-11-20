@@ -136,7 +136,7 @@ export default function LoginComponent() {
           {t("googleLogin")}
         </Button>
         <Link
-          href="#"
+          href="/forgot-password"
           className="inline-block w-full text-center text-sm underline"
           prefetch={false}
         >
