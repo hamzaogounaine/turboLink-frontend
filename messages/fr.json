@@ -62,7 +62,8 @@
     "passwordIncorrect": "Mot de passe incorrect.",
     "fileTooLarge" : "Le fichier est trop volumineux (Max 5 Mo).",
     "fileNotSelected" : "Veuillez sélectionner un fichier d'abord.",
-    "invalidUrl" : "Veuillez saisir une URL valide."
+    "invalidUrl" : "Veuillez saisir une URL valide.",
+    "emailTaken": "Cette adresse e-mail est déjà utilisée."
   },
   "profileTab": {
     "heading": "Informations de profil",

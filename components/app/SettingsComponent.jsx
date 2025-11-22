@@ -56,7 +56,7 @@ const SettingsComponent = () => {
                 <ProfileTab user={user}/>
               </TabsContent>
               <TabsContent value="privacy" className={'p-2'}>
-                <PrivacyTab user={user} />
+                {user.is_google_user ? <div>You dont have the</div>  : <PrivacyTab user={user} />}
               </TabsContent>
             </Tabs>
           </div>
