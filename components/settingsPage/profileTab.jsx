@@ -29,7 +29,7 @@ const ProfileTab = ({ user }) => {
   const [email, setEmail] = useState(user.email || "");
   const [phoneNumber, setPhoneNumber] = useState(user.phone_number || "");
   const [bio, setBio] = useState(user.bio || "");
-  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isVerficationModalOpen, setVerificationModal] = useState(false);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -40,7 +40,7 @@ const ProfileTab = ({ user }) => {
       toast.error(tNotif("validationError")); // Ensure you have this key
       return;
     }
-    setIsPasswordModalOpen(true);
+    setVerificationModal(true);
   };
 
   // 2. Triggered when user confirms password in modal
@@ -66,7 +66,7 @@ const ProfileTab = ({ user }) => {
 
       if (res.status === 200) {
         toast.success(tNotif("profileUpdated"));
-        setIsPasswordModalOpen(false); // Close modal on success
+        setVerificationModal(false); // Close modal on success
         setPassword(""); // Clear sensitive data
       } else {
         toast.error(tNotif("profileUpdateFailure"));
@@ -74,7 +74,7 @@ const ProfileTab = ({ user }) => {
     } catch (err) {
       if (err.response.data.message) {
         toast.error(tNotif(err.response.data.message));
-        setIsPasswordModalOpen(false);
+        setVerificationModal(false);
       } else {
         toast.error(tNotif("profileUpdateFailure"));
       }
@@ -93,7 +93,6 @@ const ProfileTab = ({ user }) => {
       client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
       scope: "openid email profile",
       callback: async (tokenResponse) => {
-        console.log(tokenResponse);
 
         const { access_token } = tokenResponse;
         if (!access_token) {
@@ -121,7 +120,6 @@ const ProfileTab = ({ user }) => {
     if (!accessToken) {
       toast.error("Google verification required");
     }
-    console.log(accessToken , user._id)
 
     try {
       const res = await api.post("/update-google-profile", {
@@ -137,7 +135,7 @@ const ProfileTab = ({ user }) => {
       toast.error('Error occured !')
     }
     finally{
-      setIsPasswordModalOpen(false)
+      setVerificationModal(false)
       setLoading(false)
     }
   };
@@ -148,17 +146,18 @@ const ProfileTab = ({ user }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="first-name">{t("firstNameLabel")}</Label>
+          <Label htmlFor="first-name" >{t("firstNameLabel")}<span className="text-destructive">*</span></Label>
           <Input
             id="first-name"
             value={firstName} // 💥 Controlled component (value vs defaultValue)
             className="mt-1"
             placeholder={t("firstNamePlaceholder")}
             onChange={(e) => setFirstName(e.target.value)}
+            required
           />
         </div>
         <div>
-          <Label htmlFor="last-name">{t("lastNameLabel")}</Label>
+          <Label htmlFor="last-name">{t("lastNameLabel")}<span className="text-destructive">*</span></Label>
           <Input
             id="last-name"
             value={lastName}
@@ -170,7 +169,7 @@ const ProfileTab = ({ user }) => {
       </div>
 
       <div>
-        <Label htmlFor="email">{t("emailLabel")}</Label>
+        <Label htmlFor="email">{t("emailLabel")}<span className="text-destructive">*</span></Label>
         <Input
           id="email"
           type="email"
@@ -219,8 +218,8 @@ const ProfileTab = ({ user }) => {
 
       {!user.is_google_user && (
         <Dialog
-          open={isPasswordModalOpen}
-          onOpenChange={setIsPasswordModalOpen}
+          open={isVerficationModalOpen}
+          onOpenChange={setVerificationModal}
           className={"absolute inset-0"}
         >
           <DialogContent className="sm:max-w-[425px]">
@@ -250,7 +249,7 @@ const ProfileTab = ({ user }) => {
             <DialogFooter>
               <Button
                 variant="outline"
-                onClick={() => setIsPasswordModalOpen(false)}
+                onClick={() => setVerificationModal(false)}
               >
                 {t("cancelButton") || "Cancel"}
               </Button>
@@ -270,8 +269,8 @@ const ProfileTab = ({ user }) => {
 
       {user.is_google_user && (
         <Dialog
-          open={isPasswordModalOpen}
-          onOpenChange={setIsPasswordModalOpen}
+          open={isVerficationModalOpen}
+          onOpenChange={setVerificationModal}
           className={"absolute inset-0"}
         >
           <DialogContent className="sm:max-w-[425px]">

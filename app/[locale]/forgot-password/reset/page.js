@@ -6,24 +6,16 @@ import { Label } from '@/components/ui/label'
 import UnauthorizedPage from '@/components/Unauthorized'
 import api from '@/lib/api'
 import { Loader2Icon } from 'lucide-react' // Use Loader2Icon for better rotation
+import { useTranslations } from 'next-intl'
 import { useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
 
 // WARNING: Assuming 't' is passed via context or defined globally, which is bad practice.
 // For demonstration, I will define dummy state and handler functions.
-const t = (key) => {
-    const translations = {
-        "title": "Set New Password",
-        "subtitle": "Enter your new password below.",
-        "password": "New Password",
-        "confirmPassword": "Confirm Password",
-        "submit": "Set Password"
-    };
-    return translations[key] || key;
-}
-
 const PasswordResetPage = () => {
+  const t = useTranslations('passwordReset')
+  const tError = useTranslations('errors')
   // --- Required State ---
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -40,12 +32,12 @@ const PasswordResetPage = () => {
     setIsError(false);
 
     if (password.length < 6) {
-      toast.error(t("validationLength"));
+      toast.error(tError("validationLength"));
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error(t("validationMatch"));
+      toast.error(tError("validationMatch"));
       return;
     }
 
@@ -58,7 +50,12 @@ const PasswordResetPage = () => {
       setPassword('');
       setConfirmPassword('');
     } catch (err) {
-      toast.error(t("failure"));
+      console.log(err)
+      if (err.response.data.message) {
+        toast.error(tError(err.response.data.message))
+      } else {
+        toast.error(tError("unexpectedError"));
+      }
       setIsError(true);
     } finally {
       setLoading(false);

@@ -138,7 +138,8 @@
     "noUserFound": "User not found. This verification link may be invalid.",
     "invalidCode": "The verification code is incorrect. Please check your email again.",
     "codeExpired": "The verification code has expired. Please request a new one.",
-    "error_network": "A network error occurred. Please check your connection."
+    "error_network": "A network error occurred. Please check your connection.",
+    "accountLocked" : "Your account is locked. Please try again after {minutes} minutes."
   },
  "unauthorized": {
     "unauthorizedTitle": "Access Denied", 

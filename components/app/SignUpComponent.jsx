@@ -132,7 +132,7 @@ export default function SignUpComponent() {
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         {/* Username Field */}
         <div className="space-y-2">
-          <Label htmlFor="username">{t("username")}</Label>
+          <Label htmlFor="username">{t("username")}<span className="text-destructive">*</span></Label>
           <Input
             type="text"
             placeholder={t("username")}
@@ -143,7 +143,7 @@ export default function SignUpComponent() {
 
         {/* First Name Field */}
         <div className="space-y-2">
-          <Label htmlFor="firstName">{t("firstName")}</Label>
+          <Label htmlFor="firstName">{t("firstName")}<span className="text-destructive">*</span></Label>
           <Input
             type="text"
             placeholder={t("firstName")}
@@ -154,7 +154,7 @@ export default function SignUpComponent() {
 
         {/* Last Name Field */}
         <div className="space-y-2">
-          <Label htmlFor="lastName">{t("lastName")}</Label>
+          <Label htmlFor="lastName">{t("lastName")}<span className="text-destructive">*</span></Label>
           <Input
             type="text"
             placeholder={t("lastName")}
@@ -165,7 +165,7 @@ export default function SignUpComponent() {
 
         {/* Email Field */}
         <div className="space-y-2">
-          <Label htmlFor="email">{t("email")}</Label>
+          <Label htmlFor="email">{t("email")}<span className="text-destructive">*</span></Label>
           <Input 
             type="email" 
             placeholder="m@example.com" 
@@ -176,7 +176,7 @@ export default function SignUpComponent() {
 
         {/* Password Field */}
         <div className="space-y-2">
-          <Label htmlFor="password">{t("password")}</Label>
+          <Label htmlFor="password">{t("password")}<span className="text-destructive">*</span></Label>
           <Input 
             type="password" 
             {...register("password")} 
@@ -186,7 +186,7 @@ export default function SignUpComponent() {
 
         {/* Confirm Password Field */}
         <div className="space-y-2">
-          <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
+          <Label htmlFor="confirmPassword">{t("confirmPassword")}<span className="text-destructive">*</span></Label>
           <Input 
             type="password" 
             {...register("confirmPassword")} 

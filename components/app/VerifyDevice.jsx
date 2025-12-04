@@ -48,8 +48,8 @@ const VerifyDevice = ({ email }) => {
 
   return (
     // Replaced 'screen-h' with a clean, standard centering pattern
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="mx-auto w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-xl dark:bg-gray-800">
+    <div className="flex screen-h items-center justify-center">
+      <div className="mx-auto w-full max-w-md space-y-6 rounded-lg">
         <div className="space-y-3 text-center">
           <h1 className="text-3xl font-extrabold text-gray-900 dark:text-gray-50">
             {t("title") || "Device Verification"}

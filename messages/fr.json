@@ -138,7 +138,8 @@
     "noUserFound": "Utilisateur introuvable. Ce lien de vérification est peut-être invalide.",
     "invalidCode": "Le code de vérification est incorrect. Veuillez vérifier à nouveau votre e-mail.",
     "codeExpired": "Le code de vérification a expiré. Veuillez en demander un nouveau.",
-    "error_network": "Une erreur réseau est survenue. Veuillez vérifier votre connexion."
+    "error_network": "Une erreur réseau est survenue. Veuillez vérifier votre connexion.",
+  "accountLocked" : "Votre compte est bloqué. Veuillez réessayer dans {minutes} minutes"
   },
   "unauthorized": {
     "unauthorizedTitle": "Accès Refusé", 

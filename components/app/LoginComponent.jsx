@@ -34,6 +34,7 @@ export default function LoginComponent() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [mustVerifyDevice ,setMustVerifyDevice ] = useState(false)
+  const [remainingTime , setRemainingTime] = useState(null)
   const router = useRouter();
   const {login} = useAuth()
 
@@ -56,15 +57,17 @@ export default function LoginComponent() {
       if(res.status === 200 && res.data.message === "mustVerifyIp") {
         setMustVerifyDevice(true)
         return
-      }
+    }
       const message = res.data.message && t(res.data.message)
       
       login(res.data.accessToken, message)
       router.push("/dashboard");
     } catch (err) {
       console.error("Login Error:", err);
-      if (err.response) {
-        setError(err.response.data);
+      if (err.response.data.message) {
+        if(err.response.data.minutesRemaining) setRemainingTime(err.response.data.minutesRemaining)
+        console.log(err)
+        setError(err.response.data.message);
       } else {
         setError("unexpectedError");
       }
@@ -86,11 +89,10 @@ export default function LoginComponent() {
         {/* 🌟 Translated Title */}
         <p className="text-gray-500 dark:text-gray-400">
           {t("subtitle") || "Enter your email below to login to your account"}{" "}
-          {/* 🌟 Translated Subtitle */}
-          {/* 🌟 CHANGED: Display the translated general error message */}
+        
           {error && (
             <span className="text-red-500 block mt-2">
-              {t2(error)}
+              {t2(error , {minutes :  remainingTime && remainingTime})} 
             </span>
           )}
         </p>
