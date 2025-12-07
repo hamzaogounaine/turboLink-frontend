@@ -4,7 +4,8 @@
     "login": "Connexion",
     "signup": "Inscription",
     "profile": "Profile",
-    "settings": "Parametre"
+    "settings": "Parametre",
+    "myLinks" : "Mes liens"
   },
   "login": {
     "title": "Connectez-vous à votre compte",
@@ -123,6 +124,22 @@
     "validationLength": "Le mot de passe doit comporter au moins 6 caractères.",
     "validationMatch": "Les mots de passe ne correspondent pas. Veuillez vérifier votre saisie."
 },
+"shortPage": {
+  "title": "TurboLien",
+    "subtitle": "Raccourcissez instantanément vos longues URL sans friction.",
+    "placeholder": "Collez votre lien très long ici...",
+    "readyPrompt": "Prêt à déployer. Appuyez simplement sur la flèche.",
+    "modalTitle": "Lien raccourci !",
+    "modalDesc": "Votre nouvelle URL turbo-chargée est prête à être partagée.",
+    "copyButton": "Copier le lien",
+    "copiedButton": "Copié !",
+    "validationError": "Veuillez entrer une URL valide et complète.",
+    "serverError": "Le serveur n'a pas réussi à raccourcir le lien. Veuillez réessayer.",
+    "linkExists": "Cette URL longue est déjà enregistrée. Récupération du lien court existant.",
+    "invalidCustomSlug": "L'identifiant de lien personnalisé que vous avez choisi est déjà utilisé ou n'est pas valide.",
+    "rateLimitExceeded": "Trop de requêtes. Veuillez patienter un instant avant de réessayer.",
+    "unknownError": "Une erreur inattendue s'est produite. Veuillez vérifier le réseau."
+  },
   "errors": {
     "shortUsername": "Le nom d'utilisateur doit contenir au moins 3 caractères.",
     "required": "Ce champ est obligatoire.",
@@ -139,7 +156,8 @@
     "invalidCode": "Le code de vérification est incorrect. Veuillez vérifier à nouveau votre e-mail.",
     "codeExpired": "Le code de vérification a expiré. Veuillez en demander un nouveau.",
     "error_network": "Une erreur réseau est survenue. Veuillez vérifier votre connexion.",
-  "accountLocked" : "Votre compte est bloqué. Veuillez réessayer dans {minutes} minutes"
+  "accountLocked" : "Votre compte est bloqué. Veuillez réessayer dans {minutes} minutes",
+    "invalidUrlFormat": "L'URL fournie est mal formatée ou incomplète."
   },
   "unauthorized": {
     "unauthorizedTitle": "Accès Refusé", 

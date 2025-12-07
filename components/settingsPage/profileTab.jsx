@@ -78,7 +78,7 @@ const ProfileTab = ({ user }) => {
       } else {
         toast.error(tNotif("profileUpdateFailure"));
       }
-    } finally {
+  } finally {
       setLoading(false);
     }
   };
@@ -108,6 +108,7 @@ const ProfileTab = ({ user }) => {
     tokenClient.requestAccessToken({
       prompt: "select_account",
     });
+    
   }catch(err) {
     console.log(err)
   }

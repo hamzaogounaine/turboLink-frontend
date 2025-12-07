@@ -8,6 +8,7 @@ import {
   Languages,
   User,
   LogOut,
+  History,
 } from "lucide-react";
 import React from "react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
@@ -36,6 +37,8 @@ const SUPPORTED_LOCALES = [
 // NOTE: I'm adding a Logout link here for a complete authenticated experience
 const navLinks = [
   { title: "home", icon: HomeIcon, href: "/dashboard" },
+  { title: "myLinks", icon: History, href: "/links" , hideOnAuth: false },
+
   // These links should ONLY show when the user is NOT logged in.
   { title: "login", icon: LogIn, href: "/login", hideOnAuth: true },
   { title: "signup", icon: UserPlus, href: "/signup", hideOnAuth: true },
@@ -54,6 +57,9 @@ const { user, logout } = useAuth();
   const shouldHide = (hideOnAuth) => {
     if (hideOnAuth && user) {
       return true;
+    } 
+    if(!hideOnAuth && !user) {
+      return true
     }
     return false;
   };
@@ -121,7 +127,7 @@ const { user, logout } = useAuth();
         {/* Logo/Brand */}
         <div className="font-bold text-xl tracking-tight">
           <Link href="/">
-            Logo <span className="text-primary">App</span>
+            Turbo <span className="text-primary">Link</span>
           </Link>
         </div>
 

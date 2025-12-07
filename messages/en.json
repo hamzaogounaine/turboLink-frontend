@@ -4,7 +4,8 @@
     "login": "Login",
     "signup": "Sign Up",
     "profile": "Profile",
-    "settings": "Settings"
+    "settings": "Settings",
+    "myLinks" : "My Links"
   },
   "login": {
     "title": "Log in to your account",
@@ -123,6 +124,22 @@
     "validationLength": "Password must be at least 6 characters.",
     "validationMatch": "The passwords do not match. Please check your input."
   },
+  "shortPage": {
+    "title": "TurboLink",
+    "subtitle": "Instantly shorten your long URLs with zero friction.",
+    "placeholder": "Paste your super long link here...",
+    "readyPrompt": "Ready to deploy. Just hit the arrow.",
+    "modalTitle": "Link Shortened!",
+    "modalDesc": "Your new turbo-charged URL is ready to be shared.",
+    "copyButton": "Copy Link",
+    "copiedButton": "Copied!",
+    "validationError": "Please enter a valid, complete URL.",
+    "serverError": "The server failed to shorten the link. Try again.",
+    "linkExists": "This long URL is already registered. Fetching existing short link.",
+    "invalidCustomSlug": "The custom link ID you chose is already in use or invalid.",
+    "rateLimitExceeded": "Too many requests. Please wait a moment before trying again.",
+    "unknownError": "An unexpected error occurred. Please check the network."
+  },
   "errors": {
     "shortUsername": "Username must contain at least 3 characters.",
     "required": "This field is required.",
@@ -139,7 +156,8 @@
     "invalidCode": "The verification code is incorrect. Please check your email again.",
     "codeExpired": "The verification code has expired. Please request a new one.",
     "error_network": "A network error occurred. Please check your connection.",
-    "accountLocked" : "Your account is locked. Please try again after {minutes} minutes."
+    "accountLocked" : "Your account is locked. Please try again after {minutes} minutes.",
+    "invalidUrlFormat": "The provided URL is badly formatted or incomplete."
   },
  "unauthorized": {
     "unauthorizedTitle": "Access Denied", 
