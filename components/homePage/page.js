@@ -16,7 +16,7 @@ export default function Home() {
   const [customAlias, setCustomAlias] = useState('');
   const [password, setPassword] = useState('');
   const [maxClicks, setMaxClicks] = useState('');
-  const [shortenedUrl, setShortenedUrl] = useState('http://localhost:3000/11');
+  const [shortenedUrl, setShortenedUrl] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [error , setError] = useState(null)
