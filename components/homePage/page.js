@@ -1,155 +1,216 @@
-"use client"
-import React, { useState } from 'react'
-import { Input } from '../ui/input'
-import { Button } from '../ui/button'
-import { ArrowRight, Check, Copy } from 'lucide-react'
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogDescription,
-    DialogFooter 
-} from '../ui/dialog' 
-import api from '@/lib/api'
-import { toast } from 'sonner'
-import { useTranslations } from 'next-intl'
+'use client';
 
-const HomePage = () => {
-    // State for managing the modal and the resulting link
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [shortLink, setShortLink] = useState('')
-    const [isCopied, setIsCopied] = useState(false)
-    const [url , setUrl] = useState('')
-    const t = useTranslations('shortPage') 
-    const tError = useTranslations('errors')
+import { useState } from 'react';
+// Removing Card imports: Card, CardContent, CardDescription, CardHeader, CardTitle
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { ChevronDown, ChevronUp, Copy, Link as LinkIcon, Lock, Zap } from 'lucide-react'; 
+import { Separator } from '@/components/ui/separator'; 
+import api from '@/lib/api';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
-    // Simulates the link shortening process
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        try {
-          // You should add client-side URL validation here before the API call!
-          // e.g., if (!isValidUrl(url)) { return toast.error(t('validationError')) }
+export default function Home() {
+  const [longUrl, setLongUrl] = useState('');
+  const [customAlias, setCustomAlias] = useState('');
+  const [password, setPassword] = useState('');
+  const [maxClicks, setMaxClicks] = useState('');
+  const [shortenedUrl, setShortenedUrl] = useState('http://localhost:3000/11');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [error , setError] = useState(null)
+  const tError = useTranslations('errors')
 
-          const res = await api.post('/url/short' , {url})
-          if(res.status === 201) {
-            setShortLink(res.data.shortUrl) 
-            setIsModalOpen(true)
-            setIsCopied(false) 
-          }
-        }
-        catch (err) {
-          // **CRITICAL FIX**: Handle cases where err.response or err.response.data might be missing
-          const errorMessageKey = err.response?.data?.message || 'unknownError';
-          toast.error(tError(errorMessageKey));
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setShortenedUrl('')
+    setError('')
+    if (!longUrl) return; 
+    setIsLoading(true);
+
+    try {
+      const response = await api.post('/shorten', {
+          longUrl,
+          customAlias: customAlias || undefined,
+          password: password || undefined,
+          maxClicks: maxClicks ? Number.parseInt(maxClicks) : undefined,
+        });
+
+      setShortenedUrl(response.data.shortUrl);
+      setCustomAlias('');
+      setPassword('');
+      setMaxClicks('');
+
+    } catch (error) {
+        setError(tError(error.response.data.message));
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    // Function to handle copying the URL
-    const handleCopy = () => {
-        if (navigator.clipboard && shortLink) {
-            navigator.clipboard.writeText(shortLink).then(() => {
-                setIsCopied(true)
-                // Using the key from the 'general' namespace in your JSON structure
-                toast.success(t('general.linkCopied')) 
-                setTimeout(() => setIsCopied(false), 2000) 
-            }).catch(err => {
-                // Log the failure, but don't crash
-                console.error("Copy failed:", err)
-            })
-        }
+  const copyToClipboard = () => {
+    if (shortenedUrl) {
+      navigator.clipboard.writeText(shortenedUrl);
+      alert('Copied to clipboard!'); 
     }
+  };
 
-    return (
-        <>
-            {/* --- MAIN PAGE CONTENT --- */}
-            <div className='flex flex-col gap-10 items-center justify-center screen-h p-4 bg-gradient-to-b from-white via-white to-primary/50'>
-              
-                {/* TRANSLATED TITLE */}
-                <h1 className='text-6xl font-extrabold tracking-tight sm:text-7xl'>
-                    {t('title')}
-                </h1>
-                {/* TRANSLATED SUBTITLE */}
-                <p className='text-xl text-gray-400 max-w-2xl text-center font-light'>
-                    {t('subtitle')}
-                </p>
-                
-                <form onSubmit={handleSubmit} className='relative flex w-full max-w-2xl mt-4 shadow-2xl rounded-xl overflow-hidden'>
-                    <Input 
-                        className='flex-grow md:h-16 h-14 pl-6 pr-20 text-lg border-none 
-                                   -0 transition-all' 
-                        // TRANSLATED PLACEHOLDER
-                        placeholder={t('placeholder')} 
-                        onChange={(e) => setUrl(e.target.value)}
-                    />
-                    
-                    <Button 
-                        className='absolute right-0 top-0 h-full md:w-20 w-14 
-                                   bg-primary hover:bg-primary/90 transition-colors 
-                                   rounded-none flex items-center justify-center'
-                        type='submit' 
-                    >
-                        <ArrowRight className='w-6 h-6' />
-                    </Button>
-                </form>
+  return (
+    // FULL SCREEN WRAPPER
+    <main className="md:screen-h flex flex-col items-center justify-center p-8 bg-background">
+      <div className="w-full max-w-4xl py-20">
+        
+        {/* HEADER SECTION (Former CardHeader) */}
+        <header className="text-center mb-10">
+          <h1 className="text-6xl font-extrabold tracking-tighter text-foreground">
+              Turbo Link
+          </h1>
+          <p className="mt-4 text-xl text-muted-foreground max-w-2xl mx-auto">
+            The world's fastest way to shorten, secure, and track your links. Optimized for speed and clarity.
+          </p>
+        </header>
 
-                {/* TRANSLATED PROMPT */}
-                <p className='text-sm text-gray-500 mt-2'>
-                    {t('readyPrompt')}
-                </p>
+        {/* INPUT/FORM SECTION (Replaced Card with a simple div container) */}
+        <div className="p-8 **bg-muted/10** border border-border rounded-xl shadow-2xl **max-w-3xl mx-auto**">
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            
+            {/* Primary Input */}
+            <div className="space-y-2">
+              <Label htmlFor="long-url" className="text-base font-semibold text-foreground flex items-center">
+                Original URL (Required)
+              </Label>
+              <Input
+                id="long-url"
+                type="url"
+                placeholder="Paste your incredibly long link here..."
+                value={longUrl}
+                onChange={(e) => setLongUrl(e.target.value)}
+                required
+                className="md:h-14 h-10 text-lg border-primary/50 focus-visible:ring-primary"
+              />
             </div>
 
-            {/* --- SHADCN DIALOG (MODAL) --- */}
-            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-                <DialogContent className="sm:max-w-[425px] ">
-                    <DialogHeader>
-                        {/* TRANSLATED MODAL TITLE */}
-                        <DialogTitle className="text-2xl text-green-400 flex items-center">
-                            <Check className='w-6 h-6 mr-2' /> {t('modalTitle')}
-                        </DialogTitle>
-                        {/* TRANSLATED MODAL DESCRIPTION */}
-                        <DialogDescription className="text-gray-400">
-                            {t('modalDesc')}
-                        </DialogDescription>
-                    </DialogHeader>
+            <Separator />
 
-                    {/* Short Link Display remains the same */}
-                    <div className="flex items-center space-x-2 mt-4">
-                        <div className="grid flex-1 gap-2">
-                            <Input
-                                id="short-url"
-                                defaultValue={shortLink}
-                                readOnly
-                                className="col-span-3  font-mono text-base"
-                            />
-                        </div>
-                    </div>
+            {/* Advanced Options Toggle */}
+            <Button
+              type="button"
+              variant="link"
+              className="p-0 h-auto text-primary hover:text-primary/80"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+            >
+              <span className="flex items-center text-base font-semibold">
+                {showAdvanced ? 'Hide Optional Settings' : 'Add Customizations'}
+                {showAdvanced ? <ChevronUp className="w-5 h-5 ml-1" /> : <ChevronDown className="w-5 h-5 ml-1" />}
+              </span>
+            </Button>
+            
+            {/* Collapsible Advanced Fields */}
+            <div className={`space-y-4 overflow-hidden transition-all duration-300 ${showAdvanced ? 'max-h-96 opacity-100 pt-2' : 'max-h-0 opacity-0'}`}>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Custom Alias Input */}
+                  <div className="space-y-2">
+                    <Label htmlFor="custom-alias" className="text-sm font-medium text-foreground flex items-center">
+                      <LinkIcon className="w-4 h-4 mr-2 text-muted-foreground" /> Short ID
+                    </Label>
+                    <Input
+                      id="custom-alias"
+                      type="text"
+                      placeholder="custom-link"
+                      value={customAlias}
+                      onChange={(e) => setCustomAlias(e.target.value)}
+                      className=""
+                    />
+                  </div>
 
-                    <DialogFooter className='sm:justify-end  mt-4'>
-                        <Button 
-                            onClick={handleCopy} 
-                            className={`w-full py-2 text-lg font-semibold transition-colors ${
-                                isCopied 
-                                    ? 'bg-green-600 hover:bg-green-700' 
-                                    : 'bg-primary/95 hover:bg-primary'
-                            }`}
-                        >
-                            {isCopied ? (
-                                <>
-                                    <Check className='w-5 h-5 mr-2' /> {t('copiedButton')}
-                                </>
-                            ) : (
-                                <>
-                                    <Copy className='w-5 h-5 mr-2' /> {t('copyButton')}
-                                </>
-                            )}
-                        </Button>
-                       
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
-        </>
-    )
+                  {/* Password Input */}
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-sm font-medium text-foreground flex items-center">
+                      <Lock className="w-4 h-4 mr-2 text-muted-foreground" /> Password
+                    </Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="Secure link"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className=""
+                    />
+                  </div>
+
+                  {/* Max Clicks Input */}
+                  <div className="space-y-2">
+                    <Label htmlFor="max-clicks" className="text-sm font-medium text-foreground flex items-center">
+                      <Zap className="w-4 h-4 mr-2 text-muted-foreground" /> Max Clicks
+                    </Label>
+                    <Input
+                      id="max-clicks"
+                      type="number"
+                      placeholder="Unlimited"
+                      value={maxClicks}
+                      onChange={(e) => setMaxClicks(e.target.value)}
+                      min="1"
+                      className=""
+                    />
+                  </div>
+              </div>
+            </div>
+            <div>
+                {error && <p className='text-destructive text-center'>{error}</p>}
+            </div>
+            
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              disabled={isLoading || !longUrl}
+              className="w-full md:h-14 h-12 mt-6 text-xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+            >
+              {isLoading ? (
+                <span className="flex items-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  Processing...
+                </span>
+              ) : (
+                'Generate Short Link'
+              )}
+            </Button>
+          </form>
+
+          {/* Result Display */}
+          {shortenedUrl && (
+            <div className="mt-8 md:p-6 p-3 bg-secondary/50 rounded-lg border border-primary/30 space-y-3">
+              <p className="text-lg text-primary font-medium">Link Created Successfully:</p>
+              <div className="flex items-center gap-2">
+                <code 
+                  className="flex-1 bg-background md:px-4 md:py-3 px-2 py-1 rounded-lg md:text-md text-sm font-mono text-foreground break-all"
+                  title={shortenedUrl} 
+                >
+                  {shortenedUrl}
+                </code>
+                <Button 
+                  onClick={copyToClipboard} 
+                  variant="default" 
+                  size="icon" 
+                  className="shrink-0 md:w-12 md:h-12  bg-primary hover:bg-primary/80 text-primary-foreground"
+                >
+                  <Copy className="w-5 h-5" />
+                </Button>
+              </div>
+              <Link href={'/links'}>
+                <p className='text-muted-foreground underline' >See full shorted links list</p>
+              </Link>
+            </div>
+          )}
+        </div>
+        
+        {/* Footer/Attribution */}
+        <p className="text-center text-xs text-muted-foreground mt-8">
+          All links are processed securely and instantly.
+        </p>
+      </div>
+    </main>
+  );
 }
-
-export default HomePage

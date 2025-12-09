@@ -157,7 +157,9 @@
     "codeExpired": "Le code de vérification a expiré. Veuillez en demander un nouveau.",
     "error_network": "Une erreur réseau est survenue. Veuillez vérifier votre connexion.",
   "accountLocked" : "Votre compte est bloqué. Veuillez réessayer dans {minutes} minutes",
-    "invalidUrlFormat": "L'URL fournie est mal formatée ou incomplète."
+    "invalidUrlFormat": "L'URL fournie est mal formatée ou incomplète.",
+    "customUrlAlreadyExists" : "L'identifiant court (alias) demandé est déjà utilisé par un autre lien."
+
   },
   "unauthorized": {
     "unauthorizedTitle": "Accès Refusé", 
