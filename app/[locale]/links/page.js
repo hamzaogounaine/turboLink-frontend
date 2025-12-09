@@ -1,10 +1,11 @@
+import LinksComponent from '@/components/app/linksPage/LinksComponents'
 import ProtectedRoute from '@/components/protectedRoute'
 import React from 'react'
 
 const LinksPage = () => {
   return (
     <div>
-      LinksPage
+      <LinksComponent />
     </div>
   )
 }
