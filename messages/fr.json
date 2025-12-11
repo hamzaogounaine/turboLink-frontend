@@ -161,6 +161,32 @@
     "customUrlAlreadyExists" : "L'identifiant court (alias) demandé est déjà utilisé par un autre lien."
 
   },
+    "editLinksPage": {
+      "header_title": "Modifier le Lien",
+      "header_description": "Mettez à jour l'URL de destination ou modifiez le slug du lien court.",
+      "form_label_short_link_slug": "Slug du Lien Court",
+      "form_label_destination_url": "URL de Destination",
+      "form_note_slug_warning": "Modifier ceci rompra les liens existants.",
+      "form_error_prefix": "Erreur",
+      "form_error_required_fields": "Les champs de l'URL courte et de l'URL de destination sont obligatoires.",
+      "form_error_server_default": "Échec de la mise à jour en raison d'une erreur de serveur.",
+      "settings_title": "Paramètres Avancés",
+      "settings_label_max_clicks": "Limite de Clics Max.",
+      "settings_label_password_protection": "Protection par Mot de Passe",
+      "settings_placeholder_max_clicks": "ex: 100 (Laisser vide pour illimité)",
+      "settings_placeholder_password": "Entrez un nouveau mot de passe ou laissez vide pour conserver l'actuel",
+      "settings_note_max_clicks": "Le lien sera désactivé automatiquement après ce nombre de clics.",
+      "settings_note_password_change": "Soumettez avec un nouveau mot de passe pour le changer, ou soumettez à blanc pour supprimer la protection.",
+      "analytics_total_clicks": "Total des Clics",
+      "analytics_created_on": "Créé le",
+      "button_saving": "Enregistrement...",
+      "button_save_changes": "Enregistrer les Modifications",
+      "toast_success": "mis à jour avec succès",
+      "loading_data": "Chargement des données du lien...",
+      "loading_error_default": "Le lien avec l'ID {{short_url}} n'a pas pu être chargé.",
+      "error_title": "Lien Introuvable",
+      "error_go_back": "Retourner aux Liens"
+    },
   "unauthorized": {
     "unauthorizedTitle": "Accès Refusé", 
     "unauthorizedSubtitle": "Vous n'avez pas l'autorisation d'afficher cette page. Veuillez vous connecter à un compte autorisé.",

@@ -7,9 +7,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card' 
-import { Loader2, CheckCircle, Save, XCircle } from 'lucide-react'
+import { Loader2, Save, XCircle, Lock, MousePointerClick, Calendar, ExternalLink, Copy, Check, ArrowLeft, Info } from 'lucide-react'
 import { toast } from 'sonner'
-import { Switch } from '@/components/ui/switch' // Assuming you have a Switch component for toggling password visibility/setting
+import { Switch } from '@/components/ui/switch' 
+import { useTranslations } from 'next-intl'
+
 
 const fetcher = async (url) => {
     const res = await api.get(url)
@@ -20,7 +22,9 @@ const BASE_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || "https://turbolink.supe
 
 const EditLinkPage = ({ short_url }) => {
     const router = useRouter()
-    
+    const t = useTranslations('editLinksPage')
+    const [copied, setCopied] = useState(false)
+
     const { 
         data: link, 
         error, 
@@ -28,18 +32,15 @@ const EditLinkPage = ({ short_url }) => {
         mutate 
     } = useSWR(`/url/${short_url}`, fetcher)
 
-    // State updated to include new fields: password (string) and max_clicks (number/string)
     const [formData, setFormData] = useState({ 
         short_url: '', 
         redirect_url: '',
-        // Use an empty string for password until the user decides to change it
         password: '', 
-        // Use null or undefined if the limit is not set, otherwise the numeric value
         max_clicks: null, 
     })
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formError, setFormError] = useState(null)
-    const [showPasswordField, setShowPasswordField] = useState(short_url?.password ?? true)
+    const [showPasswordField, setShowPasswordField] = useState(null)
     
     // Initialize Form State
     useEffect(() => {
@@ -47,22 +48,18 @@ const EditLinkPage = ({ short_url }) => {
             setFormData({
                 short_url: link.short_url,
                 redirect_url: link.redirect_url,
-                // Do NOT pre-fill the password for security reasons.
                 password: '', 
-                // Set max_clicks if it exists, otherwise keep it null/empty string for the input
                 max_clicks: link.max_clicks ?? '', 
             })
-            // If the link already has a password, show the field to allow changing it
-            if (link.password_protected) {
+            if (link.password) {
                 setShowPasswordField(true);
             }
         }
     }, [link])
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value } = e.target;
         
-        // Handle number input for max_clicks (convert to number or null/undefined)
         if (name === 'max_clicks') {
             const numValue = value === '' ? null : parseInt(value, 10);
             setFormData(prev => ({ 
@@ -74,36 +71,35 @@ const EditLinkPage = ({ short_url }) => {
         }
     }
 
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(`${BASE_URL}/${link.short_url}`)
+        setCopied(true)
+        toast.success('Link copied to clipboard!')
+        setTimeout(() => setCopied(false), 2000)
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setIsSubmitting(true)
         setFormError(null)
 
         if (!formData.redirect_url || !formData.short_url) {
-            setFormError('Both the short URL and destination URL fields are required.')
+            setFormError(t('form_error_required_fields'))
             setIsSubmitting(false)
             return
         }
         
-        // Prepare data for API: Clean up empty password if the field is visible but empty
         const dataToSubmit = { ...formData };
         if (!dataToSubmit.password) {
             delete dataToSubmit.password;
         }
 
         try {
-            // NOTE: The API MUST handle the logic for deleting the existing password 
-            // if the user submits an empty password field when password_protected was true.
             const response = await api.put(`/url/${short_url}`, dataToSubmit)
-            
-            toast.success("updated successfully",
-                { duration: 4000 }
-            )
-            
+            toast.success(t('toast_success'), { duration: 4000 })
             mutate(response.data) 
-            
         } catch (err) {
-            const message = err.response?.data?.message || 'Update failed due to a server error.'
+            const message = err.response?.data?.message || t('form_error_server_default')
             setFormError(message)
             toast.error(message)
         } finally {
@@ -111,181 +107,348 @@ const EditLinkPage = ({ short_url }) => {
         }
     }
 
-    // --- RENDER STATES (Unchanged) ---
+    // --- RENDER STATES ---
     if (isLoading) {
         return (
-            <div className='flex flex-col items-center justify-center p-12 min-h-screen'>
-                <Loader2 className='w-8 h-8 animate-spin text-indigo-500' />
-                <p className='mt-3 text-lg font-medium text-gray-500'>Loading link data...</p>
+            <div className='flex flex-col items-center justify-center p-8 min-h-screen bg-background'>
+                <Loader2 className='w-12 h-12 animate-spin text-primary' />
+                <p className='mt-4 text-sm font-medium text-muted-foreground'>{t('loading_data')}</p>
             </div>
         )
     }
 
     if (error || !link) {
+        const displayError = formError || error?.response?.data?.message || t('loading_error_default', { short_url });
+
         return (
-            <Card className="max-w-xl mx-auto mt-10 border-red-300">
-                <CardHeader className='text-center'>
-                    <XCircle className='w-10 h-10 mx-auto text-red-500' />
-                    <CardTitle className='text-2xl text-red-800'>Link Not Found</CardTitle>
-                    <CardDescription className='text-red-600'>
-                        {formError || error?.response?.data?.message || `The link with ID ${short_url} could not be loaded.`}
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className='text-center'>
-                    <Button onClick={() => router.push('/links')} variant="secondary">
-                        Go Back to Links
-                    </Button>
-                </CardContent>
-            </Card>
+            <div className='min-h-screen bg-background flex items-center justify-center p-4'>
+                <Card className="max-w-lg w-full border-destructive/50 shadow-lg">
+                    <CardHeader className='text-center space-y-4'>
+                        <div className='mx-auto w-14 h-14 bg-destructive/10 rounded-full flex items-center justify-center'>
+                            <XCircle className='w-8 h-8 text-destructive' />
+                        </div>
+                        <CardTitle className='text-2xl font-bold'>{t('error_title')}</CardTitle>
+                        <CardDescription className='text-base'>
+                            {displayError}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className='text-center'>
+                        <Button 
+                            onClick={() => router.push('/links')} 
+                            variant="secondary"
+                            className='w-full sm:w-auto'
+                        >
+                            <ArrowLeft className='w-4 h-4 mr-2' />
+                            {t('error_go_back')}
+                        </Button>
+                    </CardContent>
+                </Card>
+            </div>
         )
     }
     
-    // 6. **Main Form Render**
+    // Main Form Render
     return (
-        <div className="flex flex-col items-center w-full min-h-screen bg-gray-50">
-            
-            <div className="w-full max-w-2xl 
-                            md:shadow-xl md:rounded-xl md:mt-10 md:mb-10 
-                            ">
-
-                <header className='p-4 md:p-6 border-b'>
-                    <h1 className='text-2xl md:text-3xl font-bold text-gray-900'>
-                        Edit Link: <span className='text-indigo-600'>{link.short_url}</span>
-                    </h1>
-                    <p className='text-sm text-gray-500 md:text-base'>
-                        Update the destination URL or change the short link slug.
-                    </p>
-                </header>
-
-                <div className='p-4 md:p-6'>
-                    <form onSubmit={handleSubmit} className='space-y-6'>
-                        
-                        {/* --- PRIMARY FIELDS --- */}
-                        <div className="space-y-2">
-                            <Label htmlFor="short_url">Short Link Slug</Label>
-                            <div className='flex items-center space-x-2'>
-                                <span className='text-gray-500 whitespace-nowrap'>{BASE_URL}/</span> 
-                                <Input 
-                                    id="short_url" 
-                                    name="short_url"
-                                    type="text"
-                                    value={formData.short_url}
-                                    onChange={handleChange}
-                                    required
-                                    className='flex-grow font-mono'
-                                    placeholder='my-awesome-link'
-                                    readOnly
-                                    disabled
-                                />
-                            </div>
-                            <p className='text-xs text-gray-500'>
-                                Changing this will break existing links.
+        <div className="min-h-screen bg-background">
+            <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+                
+                {/* Header Section */}
+                <div className='mb-6'>
+                    <div className='flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6'>
+                        <div className='space-y-1'>
+                            <h1 className='text-2xl sm:text-3xl font-bold text-foreground'>
+                                {t('header_title')}
+                            </h1>
+                            <p className='text-sm text-muted-foreground'>
+                                {t('header_description')}
                             </p>
                         </div>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => router.push('/links')}
+                            className='self-start'
+                        >
+                            <ArrowLeft className='w-4 h-4 mr-2' />
+                            Back to Links
+                        </Button>
+                    </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="redirect_url">Destination URL</Label>
-                            <Input
-                                id="redirect_url"
-                                name="redirect_url"
-                                type="url"
-                                value={formData.redirect_url}
-                                onChange={handleChange}
-                                required
-                                placeholder='https://www.the-actual-site.com/long-page'
-                                className='font-mono'
-                            />
-                        </div>
-
-                        {/* --- NEW OPTIONAL SETTINGS SECTION --- */}
-                        <div className="pt-6 border-t space-y-4">
-                            <h2 className='text-lg font-semibold text-gray-800'>Advanced Settings</h2>
-
-                            {/* MAX CLICKS INPUT */}
-                            <div className="space-y-2">
-                                <Label htmlFor="max_clicks">Max Clicks Limit</Label>
-                                <Input
-                                    id="max_clicks"
-                                    name="max_clicks"
-                                    type="number"
-                                    min="1"
-                                    value={formData.max_clicks ?? ''} // Use empty string for display when null
-                                    onChange={handleChange}
-                                    placeholder='e.g., 100 (Leave blank for unlimited)'
-                                />
-                                <p className='text-xs text-gray-500'>
-                                    The link will deactivate automatically after this many clicks.
-                                </p>
-                            </div>
-
-                            {/* PASSWORD TOGGLE/INPUT */}
-                            <div className="space-y-2 pt-2">
-                                <div className="flex items-center justify-between">
-                                    <Label htmlFor="password_toggle">Password Protection</Label>
-                                    <Switch
-                                        checked={showPasswordField}
-                                        onCheckedChange={setShowPasswordField}
-                                        id="password_toggle"
-                                    />
+                    {/* Short URL Display Card */}
+                    <Card className='border-primary/20 bg-primary/5'>
+                        <CardContent className='p-4 sm:p-5'>
+                            <div className='flex flex-col sm:flex-row sm:items-center gap-3'>
+                                <div className='flex-1 min-w-0'>
+                                    <p className='text-xs font-medium text-muted-foreground mb-1.5'>Your Short Link</p>
+                                    <p className='text-base sm:text-lg font-semibold text-foreground truncate font-mono'>
+                                        {BASE_URL}/{link.short_url}
+                                    </p>
                                 </div>
-                                
-                                {showPasswordField && (
-                                    <div className="space-y-2 mt-2">
-                                        <Input
-                                            id="password"
-                                            name="password"
-                                            type="password"
-                                            value={formData.password}
-                                            onChange={handleChange}
-                                            placeholder='Enter new password or leave blank to keep current'
-                                        />
-                                        <p className='text-xs text-gray-500'>
-                                            Submit with a new password to change it, or submit blank to remove protection.
+                                <Button
+                                    onClick={copyToClipboard}
+                                    variant="secondary"
+                                    size="sm"
+                                    className='self-start sm:self-auto shrink-0'
+                                >
+                                    {copied ? (
+                                        <>
+                                            <Check className='w-4 h-4 mr-2' />
+                                            Copied
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Copy className='w-4 h-4 mr-2' />
+                                            Copy Link
+                                        </>
+                                    )}
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Main Content Grid */}
+                <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+                    
+                    {/* Left Column - Form */}
+                    <div className='lg:col-span-2'>
+                        <Card>
+                            <CardHeader className='border-b'>
+                                <CardTitle>Configuration</CardTitle>
+                                <CardDescription>Update your link settings and preferences</CardDescription>
+                            </CardHeader>
+                            <CardContent className='p-6'>
+                                <div className='space-y-6'>
+                                    
+                                    {/* Destination URL */}
+                                    <div className="space-y-2">
+                                        <Label htmlFor="redirect_url" className='text-sm font-medium'>
+                                            Destination URL
+                                        </Label>
+                                        <div className='relative'>
+                                            <ExternalLink className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground' />
+                                            <Input
+                                                id="redirect_url"
+                                                name="redirect_url"
+                                                type="url"
+                                                value={formData.redirect_url}
+                                                onChange={handleChange}
+                                                required
+                                                placeholder='https://example.com/destination'
+                                                className='pl-10 font-mono text-sm h-10'
+                                            />
+                                        </div>
+                                        <p className='text-xs text-muted-foreground'>
+                                            The URL where visitors will be redirected
                                         </p>
                                     </div>
-                                )}
-                            </div>
-                        </div>
 
-                        {/* Analytics/Read-only Data */}
-                        <div className="grid grid-cols-2 gap-4 pt-4 border-t mt-6">
-                            <div className='text-sm'>
-                                <p className='font-medium text-gray-600'>Total Clicks</p>
-                                <p className='text-2xl font-bold text-indigo-700'>{link.clicks || 0}</p>
-                            </div>
-                            <div className='text-sm'>
-                                <p className='font-medium text-gray-600'>Created On</p>
-                                <p className='text-base text-gray-700'>
-                                    {new Date(link.createdAt).toLocaleDateString()}
-                                </p>
-                            </div>
-                        </div>
+                                    {/* Advanced Settings */}
+                                    <div className="pt-4 space-y-5">
+                                        <div className='flex items-center gap-2'>
+                                            <h3 className='text-sm font-semibold text-foreground'>Advanced Settings</h3>
+                                            <div className='h-px flex-1 bg-border'></div>
+                                        </div>
 
-                        {/* Submission Button and Error Display */}
-                        {formError && (
-                            <div className='p-3 bg-red-100 border border-red-300 text-red-700 rounded-md text-sm'>
-                                **Error:** {formError}
-                            </div>
-                        )}
+                                        {/* Max Clicks */}
+                                        <div className="space-y-2">
+                                            <Label htmlFor="max_clicks" className='text-sm font-medium'>
+                                                Click Limit
+                                            </Label>
+                                            <div className='relative'>
+                                                <MousePointerClick className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground' />
+                                                <Input
+                                                    id="max_clicks"
+                                                    name="max_clicks"
+                                                    type="number"
+                                                    min="1"
+                                                    value={formData.max_clicks ?? ''}
+                                                    onChange={handleChange}
+                                                    placeholder='Unlimited'
+                                                    className='pl-10 h-10'
+                                                />
+                                            </div>
+                                            <p className='text-xs text-muted-foreground'>
+                                                Maximum number of clicks before the link expires
+                                            </p>
+                                        </div>
 
-                        <Button 
-                            type="submit" 
-                            className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 mt-4" 
-                            disabled={isSubmitting || isLoading}
-                        >
-                            {isSubmitting ? (
-                                <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Saving...
-                                </>
-                            ) : (
-                                <>
-                                    <Save className="mr-2 h-4 w-4" />
-                                    Save Changes
-                                </>
-                            )}
-                        </Button>
-                    </form>
+                                        {/* Password Protection */}
+                                        <div className="space-y-3">
+                                            <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg border border-border">
+                                                <div className='flex items-center gap-3'>
+                                                    <div className='w-9 h-9 bg-primary/10 rounded-md flex items-center justify-center'>
+                                                        <Lock className='w-4 h-4 text-primary' />
+                                                    </div>
+                                                    <div>
+                                                        <Label htmlFor="password_toggle" className='text-sm font-medium cursor-pointer'>
+                                                            Password Protection
+                                                        </Label>
+                                                        <p className='text-xs text-muted-foreground'>Require password to access link</p>
+                                                    </div>
+                                                </div>
+                                                <Switch
+                                                    checked={showPasswordField}
+                                                    onCheckedChange={setShowPasswordField}
+                                                    id="password_toggle"
+                                                />
+                                            </div>
+                                            
+                                            {showPasswordField && (
+                                                <div className="space-y-2 pl-1">
+                                                    <Label htmlFor="password" className='text-sm font-medium'>
+                                                        Password
+                                                    </Label>
+                                                    <Input
+                                                        id="password"
+                                                        name="password"
+                                                        type="password"
+                                                        value={formData.password}
+                                                        onChange={handleChange}
+                                                        placeholder='Enter a secure password'
+                                                        className='h-10'
+                                                    />
+                                                    <p className='text-xs text-muted-foreground'>
+                                                        Leave empty to keep the current password unchanged
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Error Display */}
+                                    {formError && (
+                                        <div className='flex items-start gap-3 p-4 bg-destructive/10 border border-destructive/20 text-destructive rounded-lg text-sm'>
+                                            <XCircle className='w-4 h-4 shrink-0 mt-0.5' />
+                                            <div className='flex-1'>
+                                                <p className='font-medium mb-0.5'>Error</p>
+                                                <p className='text-destructive/90'>{formError}</p>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Submit Button */}
+                                    <div className='flex gap-3 pt-2'>
+                                        <Button 
+                                            type="button"
+                                            variant="outline"
+                                            onClick={() => router.push('/links')}
+                                            className='flex-1'
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button 
+                                            onClick={handleSubmit}
+                                            disabled={isSubmitting}
+                                            className='flex-1'
+                                        >
+                                            {isSubmitting ? (
+                                                <>
+                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                    Saving...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Save className="mr-2 h-4 w-4" />
+                                                    Save Changes
+                                                </>
+                                            )}
+                                        </Button>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    {/* Right Column - Analytics & Info */}
+                    <div className='space-y-6'>
+                        
+                        {/* Analytics Card */}
+                        <Card>
+                            <CardHeader className='border-b'>
+                                <CardTitle className='text-base'>Statistics</CardTitle>
+                                <CardDescription className='text-xs'>Link performance overview</CardDescription>
+                            </CardHeader>
+                            <CardContent className='p-6 space-y-4'>
+                                
+                                {/* Total Clicks */}
+                                <div className='space-y-1'>
+                                    <div className='flex items-center gap-2 text-xs text-muted-foreground'>
+                                        <MousePointerClick className='w-3.5 h-3.5' />
+                                        <span>Total Clicks</span>
+                                    </div>
+                                    <p className='text-3xl font-bold text-foreground tabular-nums'>{link.clicks || 0}</p>
+                                    {formData.max_clicks && (
+                                        <p className='text-xs text-muted-foreground'>
+                                            of {formData.max_clicks} limit
+                                        </p>
+                                    )}
+                                </div>
+
+                                <div className='h-px bg-border'></div>
+
+                                {/* Created Date */}
+                                <div className='space-y-1'>
+                                    <div className='flex items-center gap-2 text-xs text-muted-foreground'>
+                                        <Calendar className='w-3.5 h-3.5' />
+                                        <span>Created</span>
+                                    </div>
+                                    <p className='text-sm font-medium text-foreground'>
+                                        {new Date(link.createdAt).toLocaleDateString('en-US', { 
+                                            year: 'numeric', 
+                                            month: 'short', 
+                                            day: 'numeric' 
+                                        })}
+                                    </p>
+                                </div>
+
+                                <div className='h-px bg-border'></div>
+
+                                {/* Status Indicators */}
+                                <div className='space-y-2'>
+                                    <div className='flex items-center justify-between text-sm'>
+                                        <span className='text-muted-foreground'>Password</span>
+                                        <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${
+                                            link.password 
+                                                ? 'bg-green-500/10 text-green-700 dark:text-green-400' 
+                                                : 'bg-muted text-muted-foreground'
+                                        }`}>
+                                            {link.password ? 'Protected' : 'None'}
+                                        </span>
+                                    </div>
+                                    <div className='flex items-center justify-between text-sm'>
+                                        <span className='text-muted-foreground'>Click Limit</span>
+                                        <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${
+                                            link.max_clicks 
+                                                ? 'bg-blue-500/10 text-blue-700 dark:text-blue-400' 
+                                                : 'bg-muted text-muted-foreground'
+                                        }`}>
+                                            {link.max_clicks || 'Unlimited'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Info Card */}
+                        <Card className='border-muted-foreground/20'>
+                            <CardContent className='p-4'>
+                                <div className='flex items-start gap-3'>
+                                    <div className='w-8 h-8 bg-primary/10 rounded-md flex items-center justify-center shrink-0'>
+                                        <Info className='w-4 h-4 text-primary' />
+                                    </div>
+                                    <div className='text-xs text-muted-foreground space-y-1'>
+                                        <p className='font-medium text-foreground'>Quick Tips</p>
+                                        <ul className='space-y-1 list-disc list-inside'>
+                                            <li>Password protection adds security</li>
+                                            <li>Click limits help control access</li>
+                                            <li>Changes are saved immediately</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
                 </div>
             </div>
         </div>

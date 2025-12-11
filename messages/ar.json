@@ -161,9 +161,33 @@
     "accountLocked" : "تم قفل حسابك. يرجى المحاولة مرة أخرى بعد {minutes} دقيقة.",
     "invalidUrlFormat": "صيغة الرابط (URL) المقدمة غير صحيحة أو غير مكتملة.",
     "customUrlAlreadyExists" : "الرمز القصير أو الاسم المستعار المطلوب مسبقًا مستخدم من قبل رابط آخر."
-    
-
   },
+    "editLinksPage": {
+      "header_title": "تعديل الرابط",
+      "header_description": "حدّث عنوان URL الوجهة أو غيّر اسم الرابط المختصر (slug).",
+      "form_label_short_link_slug": "اسم الرابط المختصر (Slug)",
+      "form_label_destination_url": "عنوان URL الوجهة",
+      "form_note_slug_warning": "تغيير هذا سيعطل الروابط الموجودة حاليًا.",
+      "form_error_prefix": "خطأ",
+      "form_error_required_fields": "حقلا الرابط المختصر ورابط الوجهة مطلوبان.",
+      "form_error_server_default": "فشل التحديث بسبب خطأ في الخادم.",
+      "settings_title": "الإعدادات المتقدمة",
+      "settings_label_max_clicks": "الحد الأقصى للنقرات",
+      "settings_label_password_protection": "الحماية بكلمة مرور",
+      "settings_placeholder_max_clicks": "مثل: 100 (اتركه فارغاً بلا حدود)",
+      "settings_placeholder_password": "أدخل كلمة مرور جديدة أو اتركها فارغة للاحتفاظ بالكلمة الحالية",
+      "settings_note_max_clicks": "سيتم إلغاء تفعيل الرابط تلقائياً بعد هذا العدد من النقرات.",
+      "settings_note_password_change": "أرسل بكلمة مرور جديدة لتغييرها، أو أرسل فارغًا لإزالة الحماية.",
+      "analytics_total_clicks": "إجمالي النقرات",
+      "analytics_created_on": "تاريخ الإنشاء",
+      "button_saving": "جاري الحفظ...",
+      "button_save_changes": "حفظ التغييرات",
+      "toast_success": "تم التحديث بنجاح",
+      "loading_data": "جاري تحميل بيانات الرابط...",
+      "loading_error_default": "تعذر تحميل الرابط بالمعرف {{short_url}}.",
+      "error_title": "الرابط غير موجود",
+      "error_go_back": "العودة إلى الروابط"
+    },
   "unauthorized" : {
     "unauthorizedTitle": "وصول غير مصرح به", 
     "unauthorizedSubtitle": "ليس لديك إذن لعرض هذه الصفحة. يرجى تسجيل الدخول بحساب مصرح له.",
