@@ -57,10 +57,10 @@ const LinksComponent = () => {
     return (
         <div className='max-w-4xl mx-auto'>
             <header className='mb-6 border-b pb-3'>
-                <h1 className='text-3xl font-extrabold text-gray-900 tracking-tight'>
+                <h1 className='text-3xl font-extrabold  tracking-tight'>
                     Your Short Links ({links.length})
                 </h1>
-                <p className='text-gray-500'>Manage all your shortened URLs and view analytics.</p>
+                <p className=''>Manage all your shortened URLs and view analytics.</p>
             </header>
             
             <div className='space-y-4'> {/* Use space utility for vertical gap */}

@@ -12,9 +12,9 @@ const RedirectPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [verifying, setVerifying] = useState(false);
-  const [countdown, setCountdown] = useState(5);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [requirePassword, setRequirePassword] = useState(false);
+  const [disabled , setUrlDisabled] = useState(false)
   const {alias} = useParams()
 
   // Fetch link data
@@ -38,7 +38,13 @@ const RedirectPage = () => {
           setIsRedirecting(true);
         }
       } catch (err) {
-        setError(err.message || 'Failed to load link. This link may be expired or invalid.');
+        console.log(!!err.response.data.message)
+        if(err.response.data.message === "urlDisabled") {
+          setUrlDisabled(true)
+        }else {
+
+          setError(err.message || 'Failed to load link. This link may be expired or invalid.');
+        }
       } finally {
         setLoading(false);
       }
@@ -48,15 +54,7 @@ const RedirectPage = () => {
   }, []);
 
   // Countdown timer for redirect
-  useEffect(() => {
-    if (isRedirecting && countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    } else if (isRedirecting && countdown === 0) {
-      // Redirect to destination
-      window.location.href = linkData.redirect_url;
-    }
-  }, [isRedirecting, countdown, linkData]);
+
 
   const handlePasswordSubmit = async () => {
     if (!password) return;
@@ -88,6 +86,7 @@ const RedirectPage = () => {
   };
 
   const handleManualRedirect = () => {
+    api.post(`/url/analytics/${linkData.short_url}`)
     window.location.href = linkData.redirect_url;
   };
 
@@ -120,6 +119,29 @@ const RedirectPage = () => {
             <div>
               <h1 className="text-2xl font-bold text-foreground mb-2">Link Not Found</h1>
               <p className="text-muted-foreground">{error}</p>
+            </div>
+            <button
+              onClick={() => window.location.href = '/'}
+              className="w-full px-6 py-2.5 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-md font-medium transition-colors"
+            >
+              Go to Homepage
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  } 
+  if (disabled) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="max-w-md w-full">
+          <div className="bg-card border border-border rounded-lg shadow-lg p-8 text-center space-y-6">
+            <div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center">
+              <AlertCircle className="w-9 h-9 text-destructive" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground mb-2">Link Disabled</h1>
+              <p className="text-muted-foreground">The link youre reaching is disabled</p>
             </div>
             <button
               onClick={() => window.location.href = '/'}
@@ -260,7 +282,7 @@ const RedirectPage = () => {
           {/* Content */}
           <div className="p-8 space-y-6">
             {/* Countdown Timer */}
-            <div className="text-center py-4">
+            {/* <div className="text-center py-4">
               <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-4 border-4 border-primary/20">
                 <span className="text-4xl font-bold text-primary tabular-nums">{countdown}</span>
               </div>
@@ -268,7 +290,7 @@ const RedirectPage = () => {
                 <Clock className="w-4 h-4" />
                 Redirecting in {countdown} {countdown === 1 ? 'second' : 'seconds'}
               </p>
-            </div>
+            </div> */}
 
             {/* Destination Info */}
             <div className="space-y-4">
@@ -298,8 +320,8 @@ const RedirectPage = () => {
                   <div className="bg-muted/30 rounded-lg p-4 border border-border">
                     <p className="text-xs text-muted-foreground mb-1">Link Status</p>
                     <div className="flex items-center gap-2 mt-1">
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                      <p className="text-sm font-semibold text-foreground">Active</p>
+                      <div className={`w-2 h-2 ${linkData.is_active ? 'bg-green-500' : 'bg-red-500'} rounded-full animate-pulse`}></div>
+                      <p className="text-sm font-semibold text-foreground">{linkData.is_active ? "Active" : "Disabled"}</p>
                     </div>
                   </div>
                 </div>

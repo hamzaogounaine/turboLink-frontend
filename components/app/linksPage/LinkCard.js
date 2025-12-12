@@ -4,6 +4,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Link } from "@/i18n/navigation";
 import {
@@ -19,6 +20,7 @@ import {
   MousePointerClick,
   Lock,
   TrendingUp,
+  BarChart3,
 } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -62,159 +64,209 @@ const LinkCard = ({ link }) => {
     window.open(`${BASE_URL}/${link.short_url}`, '_blank');
   };
 
+  const getClickPercentage = () => {
+    if (!link.max_clicks) return null;
+    return Math.round((link.clicks / link.max_clicks) * 100);
+  };
+
+  const clickPercentage = getClickPercentage();
+
   return (
-    <div
-      className="group relative flex flex-col sm:flex-row sm:items-center gap-4 p-4 sm:p-5 
-                 rounded-2xl border border-gray-200 hover:border-indigo-300 
-                 hover:shadow-lg bg-white transition-all duration-300 
-                 hover:scale-[1.01] mb-4"
-    >
-      {/* Gradient Accent Bar */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 
-                      rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-      {/* Icon Section with Badge */}
-      <div className="flex-shrink-0 relative">
-        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 
-                        flex items-center justify-center shadow-md group-hover:shadow-lg 
-                        transition-shadow duration-300">
-          <LinkIcon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+    <div className="group relative bg-card border border-border rounded-lg hover:shadow-md transition-all duration-200 overflow-hidden">
+      {/* Progress bar for click limit */}
+      {link.max_clicks && (
+        <div className="absolute top-0 left-0 right-0 h-1 bg-muted">
+          <div 
+            className={`h-full transition-all duration-300 ${
+              clickPercentage >= 90 ? 'bg-destructive' : 
+              clickPercentage >= 70 ? 'bg-yellow-500' : 
+              'bg-primary'
+            }`}
+            style={{ width: `${clickPercentage}%` }}
+          />
         </div>
-        {link.password && (
-          <div className="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 rounded-full 
-                          flex items-center justify-center shadow-sm">
-            <Lock className="w-3 h-3 text-white" />
+      )}
+
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4">
+        {/* Icon Section */}
+        <div className="flex-shrink-0 relative">
+          <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+            <LinkIcon className="w-6 h-6 text-primary" />
           </div>
-        )}
-      </div>
-
-      {/* Main Content Area */}
-      <div className="flex-grow min-w-0 space-y-2">
-        {/* Short URL - Primary */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <h3 className="text-lg sm:text-xl font-bold text-gray-900 truncate">
-            {link.short_url}
-          </h3>
-          {link.max_clicks && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 
-                           bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-              <MousePointerClick className="w-3 h-3" />
-              {link.clicks || 0}/{link.max_clicks}
-            </span>
-          )}
-        </div>
-
-        {/* Destination URL */}
-        <a 
-          href={link.original_url} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="flex items-center gap-1.5 text-sm text-indigo-600 hover:text-indigo-700 
-                     hover:underline truncate group/link max-w-full"
-        >
-          <ExternalLink className="w-3.5 h-3.5 flex-shrink-0" />
-          <span className="truncate">{link.original_url}</span>
-        </a>
-
-        {/* Metadata Row */}
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-gray-500">
-          <span className="flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-gray-400" />
-            {formatCreationDate(link.createdAt)}
-          </span>
-          
-          <span className="flex items-center gap-1.5 font-semibold text-indigo-600">
-            <TrendingUp className="w-3.5 h-3.5" />
-            {link.clicks || 0} {link.clicks === 1 ? 'click' : 'clicks'}
-          </span>
-
           {link.password && (
-            <span className="flex items-center gap-1 px-2 py-0.5 bg-amber-50 text-amber-700 
-                           rounded-full text-xs font-medium">
-              <Lock className="w-3 h-3" />
-              Protected
-            </span>
+            <div className="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center shadow-sm">
+              <Lock className="w-3 h-3 text-white" />
+            </div>
           )}
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 min-w-0 space-y-2">
+          {/* Title Row */}
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base font-semibold text-foreground truncate">
+                {link.short_url}
+              </h3>
+            </div>
+            
+            {/* Mobile Actions */}
+            <div className="flex sm:hidden items-center gap-1">
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={copyToClipboard}
+                className="h-8 w-8 p-0"
+              >
+                {copied ? (
+                  <Check className="w-4 h-4 text-green-600" />
+                ) : (
+                  <Copy className="w-4 h-4" />
+                )}
+              </Button>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <MoreVertical className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={handleVisitLink}>
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    <span>Visit Link</span>
+                  </DropdownMenuItem>
+                  <Link href={`links/edit/${link.short_url}`}>
+                    <DropdownMenuItem>
+                      <Pencil className="mr-2 h-4 w-4" />
+                      <span>Edit</span>
+                    </DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuItem>
+                    <BarChart3 className="mr-2 h-4 w-4" />
+                    <span>Analytics</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <EyeOff className="mr-2 h-4 w-4" />
+                    <span>Hide</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-destructive focus:text-destructive">
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    <span>Delete</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+
+          {/* Destination URL */}
+          <a 
+            href={link.original_url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors group/link max-w-full"
+          >
+            <ExternalLink className="w-3.5 h-3.5 flex-shrink-0" />
+            <span className="truncate">{link.original_url}</span>
+          </a>
+
+          {/* Metadata */}
+          <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5" />
+              {formatCreationDate(link.createdAt)}
+            </span>
+            
+            <span className="flex items-center gap-1 font-medium">
+              <TrendingUp className="w-3.5 h-3.5" />
+              {link.clicks || 0} {link.clicks === 1 ? 'click' : 'clicks'}
+            </span>
+
+            {link.password && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-500/10 text-amber-700 dark:text-amber-400 rounded-full font-medium">
+                <Lock className="w-3 h-3" />
+                Protected
+              </span>
+            )}
+
+            {link.max_clicks && (
+              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-medium ${
+                clickPercentage >= 90 ? 'bg-destructive/10 text-destructive' :
+                clickPercentage >= 70 ? 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400' :
+                'bg-primary/10 text-primary'
+              }`}>
+                <MousePointerClick className="w-3 h-3" />
+                {clickPercentage}% used
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Desktop Actions */}
+        <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
+          <Button
+            size="sm"
+            onClick={copyToClipboard}
+            className="h-9"
+          >
+            {copied ? (
+              <>
+                <Check className="w-4 h-4 mr-1.5" />
+                Copied
+              </>
+            ) : (
+              <>
+                <Copy className="w-4 h-4 mr-1.5" />
+                Copy
+              </>
+            )}
+          </Button>
+
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleVisitLink}
+            className="h-9"
+          >
+            <ExternalLink className="w-4 h-4 mr-1.5" />
+            Visit
+          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+                <MoreVertical className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <Link href={`links/edit/${link.short_url}`}>
+                <DropdownMenuItem>
+                  <Pencil className="mr-2 h-4 w-4" />
+                  <span>Edit Link</span>
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem>
+                <BarChart3 className="mr-2 h-4 w-4" />
+                <span>View Analytics</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <EyeOff className="mr-2 h-4 w-4" />
+                <span>Hide Link</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive focus:text-destructive">
+                <Trash2 className="mr-2 h-4 w-4" />
+                <span>Delete Link</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex items-center gap-2 sm:flex-shrink-0 self-start sm:self-center">
-        {/* Copy Button - Primary Action */}
-        <Button
-          size="sm"
-          onClick={copyToClipboard}
-          className={`${
-            copied 
-              ? 'bg-green-600 hover:bg-green-700' 
-              : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700'
-          } transition-all duration-200 shadow-md hover:shadow-lg`}
-        >
-          {copied ? (
-            <>
-              <Check className="w-4 h-4 mr-1.5" />
-              <span className="hidden sm:inline">Copied!</span>
-            </>
-          ) : (
-            <>
-              <Copy className="w-4 h-4 mr-1.5" />
-              <span className="hidden sm:inline">Copy</span>
-            </>
-          )}
-        </Button>
-
-        {/* Visit Button */}
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={handleVisitLink}
-          className="border-indigo-200 hover:bg-indigo-50 hover:border-indigo-300"
-        >
-          <ExternalLink className="w-4 h-4 sm:mr-1.5" />
-          <span className="hidden md:inline">Visit</span>
-        </Button>
-
-        {/* More Actions Dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="h-9 w-9 hover:bg-gray-100 border border-transparent 
-                         hover:border-gray-200 transition-colors"
-            >
-              <MoreVertical className="w-4 h-4 text-gray-600" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <Link href={`links/edit/${link.short_url}`}>
-              <DropdownMenuItem className="text-sm cursor-pointer hover:bg-indigo-50">
-                <Pencil className="mr-2 h-4 w-4 text-indigo-600" />
-                <span>Edit Link</span>
-              </DropdownMenuItem>
-            </Link>
-            
-            <DropdownMenuItem className="text-sm cursor-pointer hover:bg-gray-50">
-              <EyeOff className="mr-2 h-4 w-4 text-gray-600" />
-              <span>Hide Link</span>
-            </DropdownMenuItem>
-            
-            <DropdownMenuItem 
-              className="text-sm cursor-pointer text-red-600 
-                         hover:bg-red-50 focus:text-red-700 focus:bg-red-50"
-            >
-              <Trash2 className="mr-2 h-4 w-4" />
-              <span>Delete Link</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
-      {/* Performance Indicator */}
+      {/* High Performance Badge */}
       {link.clicks > 100 && (
-        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 
-                        px-2 py-1 bg-gradient-to-r from-green-500 to-emerald-500 
-                        text-white text-xs font-bold rounded-full shadow-md">
+        <div className="absolute top-2 right-2 px-2 py-1 bg-primary text-primary-foreground text-xs font-semibold rounded-md shadow-sm">
           🔥 Popular
         </div>
       )}
