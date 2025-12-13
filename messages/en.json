@@ -5,7 +5,8 @@
     "signup": "Sign Up",
     "profile": "Profile",
     "settings": "Settings",
-    "myLinks" : "My Links"
+    "myLinks" : "My Links",
+    "logout" : "Logout"
   },
   "login": {
     "title": "Log in to your account",

@@ -5,7 +5,8 @@
     "signup": "Inscription",
     "profile": "Profile",
     "settings": "Parametre",
-    "myLinks" : "Mes liens"
+    "myLinks" : "Mes liens",
+    "logout" : "Deconnexion"
   },
   "login": {
     "title": "Connectez-vous à votre compte",

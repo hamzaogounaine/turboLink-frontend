@@ -63,8 +63,14 @@ const LinkEditForm = ({ link, short_url, mutate, BASE_URL }) => {
         }
     };
     
-    const handleSwitchChange = (checked) => {
-        setFormData(prev => ({ ...prev, is_active: checked }));
+    const handleSwitchChange = async (checked) => {
+        try {
+          const res = await api.post(`url/disable/${link.short_url}` , {checked})
+          mutate()
+        }
+        catch(err) {
+          toast.error(err)
+        }
     };
 
     const copyToClipboard = () => {

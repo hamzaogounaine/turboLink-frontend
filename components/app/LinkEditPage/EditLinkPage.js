@@ -117,7 +117,7 @@ const EditLinkPage = ({ short_url }) => {
                 </div>
                 <Button
                   onClick={copyToClipboard}
-                  variant="secondary"
+                  variant=""
                   size="sm"
                   className="self-start sm:self-auto shrink-0"
                 >

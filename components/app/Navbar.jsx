@@ -9,6 +9,8 @@ import {
   User,
   LogOut,
   History,
+  Settings,
+  X,
 } from "lucide-react";
 import React from "react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
@@ -122,7 +124,7 @@ const { user, logout } = useAuth();
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-40 w-full border-b bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo/Brand */}
         <div className="font-bold text-xl tracking-tight">
@@ -162,38 +164,73 @@ const { user, logout } = useAuth();
 
             <LanguageSwitcher />
             <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-              </SheetTrigger>
+    <SheetTrigger asChild>
+        <Button variant="outline" size="icon" className="shrink-0">
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle navigation menu</span>
+        </Button>
+    </SheetTrigger>
 
-              <SheetContent side="left">
-                {/* Mobile Menu Links */}
-                <div className="flex flex-col space-y-2 p-6">
-                  {navLinks.map((nav, i) => {
-                    // Conditional rendering for mobile
-                    if (shouldHide(nav.hideOnAuth)) {
-                      return null;
-                    }
+    {/* RUTHLESS IMPROVEMENT: Use standard mobile side drawer (left/right) */}
+    <SheetContent 
+        side="left" 
+        className="w-[280px] sm:w-[320px] flex flex-col p-0 border-r-0"
+    >
+        {/* Mobile Menu Header (Branding/Logo) */}
+        <div className="p-6 border-b flex items-center justify-between">
+            <Link href="/" className="text-xl font-bold text-primary tracking-tight">
+                TurboLink
+            </Link>
+            {/* The SheetClose button is usually included here by default or replaced with an 'X' */}
+            
+        </div>
 
-                    const Icon = nav.icon;
+        {/* Mobile Menu Links (Scrollable Content) */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-1">
+            {navLinks.map((nav, i) => {
+                // Conditional rendering for mobile
+                if (shouldHide(nav.hideOnAuth)) {
+                    return null;
+                }
 
-                    return (
-                      <Link
+                const Icon = nav.icon;
+                const isActive = usePathname().includes(nav.href); // Check active state
+
+                return (
+                    <Link
                         href={nav.href}
                         key={i}
-                        className="flex items-center space-x-4 p-3 rounded-md transition-colors hover:bg-muted font-semibold text-base"
-                      >
-                        <Icon className="h-5 w-5 text-primary" />
+                        className={`
+                            flex items-center space-x-3 p-3 rounded-lg transition-all 
+                            ${isActive 
+                                ? 'bg-primary text-primary-foreground shadow-md' // Active Style
+                                : 'text-foreground hover:bg-muted' // Inactive Style
+                            } 
+                            font-medium text-base
+                        `}
+                    >
+                        <Icon className="h-5 w-5" /> {/* Icon inherits color from text */}
                         <span>{t(nav.title)}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </SheetContent>
-            </Sheet>
+                        
+                    </Link>
+                );
+            })}
+        </div>
+        
+        {/* Mobile Menu Footer (User/Logout Actions) */}
+        {/* This assumes you have user context for auth */}
+        <div className="p-4 border-t space-y-2">
+            <Button variant="ghost" className="w-full justify-start text-muted-foreground">
+                <Settings className="w-4 h-4 mr-3" />
+                <span>{t('settings')}</span>
+            </Button>
+            <Button variant="destructive" className="w-full justify-start" onClick={logout}>
+                <LogOut className="w-4 h-4 mr-3" />
+                <span>{t('logout')}</span>
+            </Button>
+        </div>
+    </SheetContent>
+</Sheet>
           </div>
         </div>
       </div>
