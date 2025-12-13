@@ -12,6 +12,7 @@ import { useAuth } from "@/context/userContext";
 import Image from "next/image";
 import { toast } from "sonner";
 import VerifyDevice from "./VerifyDevice";
+import Error from "../ui/error";
 
 // Define a more specific type for field errors (keys should match the backend validation fields)
 const initialFieldErrors = {
@@ -91,9 +92,7 @@ export default function LoginComponent() {
           {t("subtitle") || "Enter your email below to login to your account"}{" "}
         
           {error && (
-            <span className="error">
-              {t2(error , {minutes :  remainingTime && remainingTime})} 
-            </span>
+            <Error message={t2(error , {minutes :  remainingTime && remainingTime})}  />
           )}
         </p>
       </div>

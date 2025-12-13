@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation"; 
 import { useState } from "react"; 
 import { toast } from "sonner";
+import Error from "../ui/error";
 
 export default function SignUpComponent() {
   const t = useTranslations("signup");
@@ -110,7 +111,7 @@ export default function SignUpComponent() {
   // Dedicated component for displaying field errors (must use RHF 'errors' object)
   const ErrorMessage = ({ error }) => {
     if (!error) return null;
-    return <p className="text-red-500 text-sm mt-1">{error.message}</p>;
+    return <p className="error mt-1">{error.message}</p>;
   };
 
   return (
@@ -124,9 +125,7 @@ export default function SignUpComponent() {
       
       {/* ⬅️ 4. DISPLAY GENERAL API ERROR HERE (Above the form) */}
       {apiError && (
-           <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-                <p className="text-red-700 text-sm font-medium text-center">{apiError}</p>
-           </div>
+        <Error message={apiError} />
       )}
 
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>

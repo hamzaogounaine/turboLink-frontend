@@ -3,6 +3,7 @@ import React, { useState, useEffect, use } from 'react';
 import { Lock, ExternalLink, Shield, AlertCircle, Loader2, CheckCircle, ArrowRight, Clock, Eye, EyeOff, Info } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import api from '@/lib/api';
+import Error from '@/components/ui/error';
 
 const RedirectPage = () => {
   const [linkData, setLinkData] = useState(null);
@@ -217,10 +218,7 @@ const RedirectPage = () => {
                     </button>
                   </div>
                   {passwordError && (
-                    <div className="flex items-start gap-2 text-destructive text-sm bg-destructive/10 p-3 rounded-md border border-destructive/20">
-                      <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                      <span>{passwordError}</span>
-                    </div>
+                    <Error message={passwordError} />
                   )}
                 </div>
 

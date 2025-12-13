@@ -222,7 +222,7 @@
   }
   .error {
     font-family : "proxima-nova-regular"; 
-    @apply text-sm text-red-500 block mt-2
+    @apply text text-red-500 block mt-2
     
   }
   body {
