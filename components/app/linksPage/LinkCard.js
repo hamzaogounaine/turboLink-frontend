@@ -7,6 +7,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Link } from "@/i18n/navigation";
+import api from "@/lib/api";
 import {
   Clock,
   MoreVertical,
@@ -22,16 +23,22 @@ import {
   TrendingUp,
   BarChart3,
   CheckCircle, // New icon for Active
-  XCircle, // New icon for Inactive/Expired
+  XCircle,
+  Loader, // New icon for Inactive/Expired
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import DeleteLinkDialog from "./DeleteState";
 
-const LinkCard = ({ link }) => {
+const LinkCard = ({ link, mutate }) => {
   const [copied, setCopied] = useState(false);
+  const [hideLoading, setHideLoading] = useState(false);
+  const [showDelete , setShowDelete] = useState(false)
 
   // NOTE: You should get this from a hook or context, not process.env in a component.
-  const BASE_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || "https://turbolink.superstuff.online";
+  const BASE_URL =
+    process.env.NEXT_PUBLIC_FRONTEND_URL ||
+    "https://turbolink.superstuff.online";
 
   const formatCreationDate = (dateString) => {
     // ... (formatCreationDate function remains the same)
@@ -47,7 +54,7 @@ const LinkCard = ({ link }) => {
       if (diffMinutes < 60) return `${diffMinutes}m ago`;
       if (diffHours < 24) return `${diffHours}h ago`;
       if (diffDays < 7) return `${diffDays}d ago`;
-      
+
       const options = { month: "short", day: "numeric", year: "numeric" };
       return new Intl.DateTimeFormat("en-US", options).format(date);
     } catch (error) {
@@ -65,7 +72,7 @@ const LinkCard = ({ link }) => {
   };
 
   const handleVisitLink = () => {
-    window.open(`${BASE_URL}/${link.short_url}`, '_blank');
+    window.open(`${BASE_URL}/${link.short_url}`, "_blank");
   };
 
   const getClickPercentage = () => {
@@ -73,6 +80,24 @@ const LinkCard = ({ link }) => {
     return Math.round((link.clicks / link.max_clicks) * 100);
   };
 
+  const handleLinkHide = async () => {
+    setHideLoading(true);
+    try {
+      const res = await api.post(`/url/disable/${link.short_url}`, {
+        checked: !link.is_active,
+      });
+      if (res.status === 200) {
+        toast.success("Link updated successfully");
+      }
+    } catch (err) {
+      toast.error("Error occured");
+    } finally {
+      setHideLoading(false);
+      mutate();
+    }
+  };
+
+  
   const clickPercentage = getClickPercentage();
 
   // --- NEW STATUS LOGIC ---
@@ -112,11 +137,13 @@ const LinkCard = ({ link }) => {
       {/* Progress bar for click limit */}
       {link.max_clicks && (
         <div className="absolute top-0 left-0 right-0 h-1 bg-muted">
-          <div 
+          <div
             className={`h-full transition-all duration-300 ${
-              clickPercentage >= 90 ? 'bg-destructive' : 
-              clickPercentage >= 70 ? 'bg-yellow-500' : 
-              'bg-primary'
+              clickPercentage >= 90
+                ? "bg-destructive"
+                : clickPercentage >= 70
+                ? "bg-yellow-500"
+                : "bg-primary"
             }`}
             style={{ width: `${clickPercentage}%` }}
           />
@@ -124,7 +151,7 @@ const LinkCard = ({ link }) => {
       )}
 
       {/* Card Content - uses padding to account for the progress bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 pt-5 sm:pt-4"> 
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 pt-5 sm:pt-4">
         {/* Icon Section */}
         <div className="flex-shrink-0 relative">
           <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -139,7 +166,6 @@ const LinkCard = ({ link }) => {
 
         {/* Main Content Area */}
         <div className="flex-1 min-w-0 space-y-2">
-          
           {/* Title Row */}
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1 min-w-0">
@@ -147,7 +173,7 @@ const LinkCard = ({ link }) => {
                 {link.short_url}
               </h3>
             </div>
-            
+
             {/* Mobile Dropdown Menu (Secondary Actions) */}
             <div className="flex sm:hidden items-center gap-1 flex-shrink-0">
               <DropdownMenu>
@@ -168,11 +194,19 @@ const LinkCard = ({ link }) => {
                     <span>View Analytics</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <EyeOff className="mr-2 h-4 w-4" />
-                    <span>Hide Link</span>
+                  <DropdownMenuItem onClick={handleLinkHide}>
+                    <XCircle className="mr-2 h-4 w-4" />
+                    <span>
+                      {hideLoading ? (
+                        <Loader className="animate-spin" />
+                      ) : link.is_active ? (
+                        "Disable Link"
+                      ) : (
+                        "Enable Link"
+                      )}
+                    </span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="text-destructive focus:text-destructive">
+                  <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => setShowDelete(!showDelete)}>
                     <Trash2 className="mr-2 h-4 w-4" />
                     <span>Delete Link</span>
                   </DropdownMenuItem>
@@ -182,9 +216,9 @@ const LinkCard = ({ link }) => {
           </div>
 
           {/* Destination URL */}
-          <a 
-            href={link.original_url} 
-            target="_blank" 
+          <a
+            href={link.original_url}
+            target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors group/link max-w-full"
           >
@@ -194,7 +228,6 @@ const LinkCard = ({ link }) => {
 
           {/* Metadata */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted-foreground pt-1">
-            
             {/* --- LINK STATUS BADGE (NEW) --- */}
             {getStatusBadge()}
             {/* -------------------------------- */}
@@ -203,10 +236,10 @@ const LinkCard = ({ link }) => {
               <Clock className="w-3.5 h-3.5" />
               {formatCreationDate(link.createdAt)}
             </span>
-            
+
             <span className="flex items-center gap-1 font-medium">
               <TrendingUp className="w-3.5 h-3.5" />
-              {link.clicks || 0} {link.clicks === 1 ? 'click' : 'clicks'}
+              {link.clicks || 0} {link.clicks === 1 ? "click" : "clicks"}
             </span>
 
             {link.password && (
@@ -217,11 +250,15 @@ const LinkCard = ({ link }) => {
             )}
 
             {link.max_clicks && (
-              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-medium ${
-                clickPercentage >= 90 ? 'bg-destructive/10 text-destructive' :
-                clickPercentage >= 70 ? 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400' :
-                'bg-primary/10 text-primary'
-              }`}>
+              <span
+                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-medium ${
+                  clickPercentage >= 90
+                    ? "bg-destructive/10 text-destructive"
+                    : clickPercentage >= 70
+                    ? "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400"
+                    : "bg-primary/10 text-primary"
+                }`}
+              >
                 <MousePointerClick className="w-3 h-3" />
                 {clickPercentage}% used
               </span>
@@ -231,11 +268,7 @@ const LinkCard = ({ link }) => {
 
         {/* Desktop Actions */}
         <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
-          <Button
-            size="sm"
-            onClick={copyToClipboard}
-            className="h-9"
-          >
+          <Button size="sm" onClick={copyToClipboard} className="h-9">
             {copied ? (
               <>
                 <Check className="w-4 h-4 mr-1.5" />
@@ -277,11 +310,20 @@ const LinkCard = ({ link }) => {
                 <span>View Analytics</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <EyeOff className="mr-2 h-4 w-4" />
-                <span>Hide Link</span>
+              <DropdownMenuItem onClick={handleLinkHide}>
+                <XCircle className="mr-2 h-4 w-4" />
+                <span>
+                  {hideLoading ? (
+                    <Loader className="animate-spin" />
+                  ) : link.is_active ? (
+                    "Disable Link"
+                  ) : (
+                    "Enable Link"
+                  )}
+                </span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive focus:text-destructive">
+
+              <DropdownMenuItem className="text-destructive focus:text-destructive"  onClick={() => setShowDelete(!showDelete)}>
                 <Trash2 className="mr-2 h-4 w-4" />
                 <span>Delete Link</span>
               </DropdownMenuItem>
@@ -289,14 +331,10 @@ const LinkCard = ({ link }) => {
           </DropdownMenu>
         </div>
       </div>
-      
+
       {/* Dedicated Mobile Action Bar */}
       <div className="flex sm:hidden justify-between gap-2 p-4 pt-0">
-        <Button
-          size="sm"
-          onClick={copyToClipboard}
-          className="flex-1 h-9"
-        >
+        <Button size="sm" onClick={copyToClipboard} className="flex-1 h-9">
           {copied ? (
             <>
               <Check className="w-4 h-4 mr-1.5" />
@@ -320,7 +358,9 @@ const LinkCard = ({ link }) => {
           Visit Link
         </Button>
       </div>
-      
+
+      <DeleteLinkDialog isOpen={showDelete} onOpenChange={setShowDelete} link={link} mutate={mutate}/>
+
       {/* High Performance Badge */}
       {link.clicks > 100 && (
         <div className="absolute top-2 right-2 px-2 py-1 bg-primary text-primary-foreground text-xs font-semibold rounded-md shadow-sm">

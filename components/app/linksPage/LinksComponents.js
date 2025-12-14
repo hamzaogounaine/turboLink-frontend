@@ -19,7 +19,6 @@ const LinksComponent = () => {
     isLoading,
     mutate,
   } = useSWR("/url/me", fetcher, {
-    revalidateOnFocus: false,
     revalidateIfStale: false,
     shouldRetryOnError: false,
   }); // Add 'mutate' for easy refresh
@@ -84,7 +83,7 @@ const LinksComponent = () => {
         {" "}
         {/* Use space utility for vertical gap */}
         {links.map((link) => (
-          <LinkCard key={link._id} link={link} />
+          <LinkCard key={link._id} link={link} mutate={mutate}/>
         ))}
       </div>
     </div>
