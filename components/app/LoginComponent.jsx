@@ -12,6 +12,7 @@ import { useAuth } from "@/context/userContext";
 import Image from "next/image";
 import { toast } from "sonner";
 import VerifyDevice from "./VerifyDevice";
+import Error from "../ui/error";
 
 // Define a more specific type for field errors (keys should match the backend validation fields)
 const initialFieldErrors = {
@@ -91,9 +92,7 @@ export default function LoginComponent() {
           {t("subtitle") || "Enter your email below to login to your account"}{" "}
         
           {error && (
-            <span className="text-red-500 block mt-2">
-              {t2(error , {minutes :  remainingTime && remainingTime})} 
-            </span>
+            <Error message={t2(error , {minutes :  remainingTime && remainingTime})}  />
           )}
         </p>
       </div>
@@ -122,7 +121,7 @@ export default function LoginComponent() {
           {/* 🌟 CHANGED: Display translated field-specific error */}
           
         </div>
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full " disabled={loading}>
           {loading ? (
             <span className="flex gap-2 items-center justify-center">
               {t("loadingText") || "Loading"}{" "}
@@ -133,7 +132,7 @@ export default function LoginComponent() {
             t("submit") || "Login" // 🌟 Translated Submit Button
           )}
         </Button>
-        <Button variant="outline" className="w-full " disabled={loading} onClick={handleGoogleLogin}>
+        <Button variant="outline" className="w-full button-primary" disabled={loading} onClick={handleGoogleLogin}>
           <Image src={'/google-icon.svg'} height={20} width={20} alt="google"/>
           {t("googleLogin")}
         </Button>

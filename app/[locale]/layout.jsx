@@ -30,7 +30,7 @@ export default function LocaleLayout({ children }) {
         />
       </head>
       <body
-        
+        className="dark"
       >
         <NextIntlClientProvider>
           <AuthProvider>

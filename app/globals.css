@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
 @custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -42,7 +40,6 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
-
 :root {
   --background: oklch(0.98 0 0);
   --foreground: oklch(0.28 0.04 260.33);
@@ -75,11 +72,9 @@
   --sidebar-accent-foreground: oklch(0.37 0.03 259.73);
   --sidebar-border: oklch(0.87 0.01 261.81);
   --sidebar-ring: oklch(0.59 0.20 277.06);
-
   --font-sans: Inter, sans-serif;
   --font-serif: Merriweather, serif;
   --font-mono: JetBrains Mono, monospace;
-
   --radius: 0.5rem;
   
   --shadow-2xs: 0px 4px 8px -1px oklch(0.00 0 0 / 0.05);
@@ -92,39 +87,59 @@
   --shadow-2xl: 0px 4px 8px -1px oklch(0.00 0 0 / 0.25);
   
 }
-
 .dark {
-  --background: oklch(0.21 0.04 264.04);
-  --foreground: oklch(0.93 0.01 256.71);
-  --card: oklch(0.28 0.04 260.33);
-  --card-foreground: oklch(0.93 0.01 256.71);
-  --popover: oklch(0.28 0.04 260.33);
-  --popover-foreground: oklch(0.93 0.01 256.71);
-  --primary: oklch(0.68 0.16 276.93);
-  --primary-foreground: oklch(0.21 0.04 264.04);
-  --secondary: oklch(0.34 0.03 261.83);
-  --secondary-foreground: oklch(0.87 0.01 261.81);
-  --muted: oklch(0.28 0.04 260.33);
-  --muted-foreground: oklch(0.71 0.02 261.33);
-  --accent: oklch(0.37 0.03 259.73);
-  --accent-foreground: oklch(0.87 0.01 261.81);
-  --destructive: oklch(0.64 0.21 25.39);
-  --border: oklch(0.45 0.03 257.68);
-  --input: oklch(0.45 0.03 257.68);
-  --ring: oklch(0.68 0.16 276.93);
-  --chart-1: oklch(0.68 0.16 276.93);
-  --chart-2: oklch(0.59 0.20 277.06);
-  --chart-3: oklch(0.51 0.23 276.97);
-  --chart-4: oklch(0.46 0.21 277.06);
-  --chart-5: oklch(0.40 0.18 277.16);
-  --sidebar: oklch(0.28 0.04 260.33);
-  --sidebar-foreground: oklch(0.93 0.01 256.71);
-  --sidebar-primary: oklch(0.68 0.16 276.93);
-  --sidebar-primary-foreground: oklch(0.21 0.04 264.04);
-  --sidebar-accent: oklch(0.37 0.03 259.73);
-  --sidebar-accent-foreground: oklch(0.87 0.01 261.81);
-  --sidebar-border: oklch(0.45 0.03 257.68);
-  --sidebar-ring: oklch(0.68 0.16 276.93);
+  /* Deep navy blue background matching the image */
+  --background: oklch(0.18 0.03 235);
+  --foreground: oklch(0.95 0.01 240);
+  
+  /* Slightly lighter navy for cards and input backgrounds */
+  --card: oklch(0.22 0.03 235);
+  --card-foreground: oklch(0.95 0.01 240);
+  --popover: oklch(0.22 0.03 235);
+  --popover-foreground: oklch(0.95 0.01 240);
+  
+  /* Bright blue for primary button (matching the "Sign In" button) */
+  --primary: oklch(0.55 0.20 250);
+  --primary-foreground: oklch(1.00 0 0);
+  
+  /* Dark gray-blue for secondary buttons */
+  --secondary: oklch(0.25 0.02 235);
+  --secondary-foreground: oklch(0.85 0.01 240);
+  
+  /* Muted colors for less prominent elements */
+  --muted: oklch(0.22 0.03 235);
+  --muted-foreground: oklch(0.60 0.01 240);
+  
+  /* Accent colors */
+  --accent: oklch(0.25 0.02 235);
+  --accent-foreground: oklch(0.85 0.01 240);
+  
+  /* Destructive/error red */
+  --destructive: oklch(0.58 0.45 25);
+  
+  /* Borders - subtle outline on inputs */
+  --border: oklch(0.30 0.02 235);
+  --input: oklch(0.30 0.02 235);
+  
+  /* Ring color for focus states */
+  --ring: oklch(0.55 0.20 250);
+  
+  /* Chart colors */
+  --chart-1: oklch(0.55 0.20 250);
+  --chart-2: oklch(0.50 0.18 250);
+  --chart-3: oklch(0.45 0.16 250);
+  --chart-4: oklch(0.40 0.14 250);
+  --chart-5: oklch(0.35 0.12 250);
+  
+  /* Sidebar colors */
+  --sidebar: oklch(0.22 0.03 235);
+  --sidebar-foreground: oklch(0.95 0.01 240);
+  --sidebar-primary: oklch(0.55 0.20 250);
+  --sidebar-primary-foreground: oklch(1.00 0 0);
+  --sidebar-accent: oklch(0.25 0.02 235);
+  --sidebar-accent-foreground: oklch(0.85 0.01 240);
+  --sidebar-border: oklch(0.30 0.02 235);
+  --sidebar-ring: oklch(0.55 0.20 250);
   
   --shadow-2xs: 0 1px 3px 0px oklch(0.00 0 0 / 0.05);
   --shadow-xs: 0 1px 3px 0px oklch(0.00 0 0 / 0.05);
@@ -135,7 +150,6 @@
   --shadow-xl: 0 1px 3px 0px oklch(0.00 0 0 / 0.10), 0 8px 10px -1px oklch(0.00 0 0 / 0.10);
   --shadow-2xl: 0 1px 3px 0px oklch(0.00 0 0 / 0.25);
 }
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -168,16 +182,13 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
-
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-
   --shadow-2xs: var(--shadow-2xs);
   --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);
@@ -187,8 +198,22 @@
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
 }
-
 @layer base {
+  @font-face {
+    font-family: 'proxima-nova-semibold';
+    src: url('/fonts/Proxima Nova Semibold.ttf');
+  }
+
+  @font-face {
+    font-family: 'proxima-nova-light';
+    src: url('/fonts/Proxima Nova Light.ttf');
+  }
+
+  @font-face {
+    font-family: 'proxima-nova-regular';
+    src: url('/fonts/Proxima Nova Regular.ttf');
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
@@ -196,10 +221,16 @@
     min-height: calc(100vh - 4rem);
   }
   .error {
-    @apply text-sm text-red-500
+    font-family : "proxima-nova-regular"; 
+    @apply  text-red-500 block mt-2
+    
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "satoshi";
+    /* font-family: "satoshi"; */
+    font-family: 'proxima-nova-semibold';
+  }
+  .button {
+    @apply py-4 px-7 bg-primary rounded-xl
   }
 }

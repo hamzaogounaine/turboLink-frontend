@@ -1,0 +1,8 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "link"]
+	url = https://github.com/hamzaogounaine/turboLink-frontend.git
+	fetch = +refs/heads/*:refs/remotes/link/*

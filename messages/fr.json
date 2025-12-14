@@ -5,7 +5,8 @@
     "signup": "Inscription",
     "profile": "Profile",
     "settings": "Parametre",
-    "myLinks" : "Mes liens"
+    "myLinks" : "Mes liens",
+    "logout" : "Deconnexion"
   },
   "login": {
     "title": "Connectez-vous à votre compte",
@@ -140,6 +141,43 @@
     "rateLimitExceeded": "Trop de requêtes. Veuillez patienter un instant avant de réessayer.",
     "unknownError": "Une erreur inattendue s'est produite. Veuillez vérifier le réseau."
   },
+"redirectPage" : {
+    "loadingTitle": "Chargement du Lien",
+    "loadingSubtitle": "Veuillez patienter...",
+    
+    "errorTitle": "Lien Introuvable",
+    "errorSubtitle": "Échec du chargement du lien. Ce lien est peut-être expiré ou invalide.",
+    
+    "disabledTitle": "Lien Désactivé",
+    "disabledSubtitle": "Le lien que vous essayez d'atteindre est désactivé.",
+    
+    "goHome": "Aller à la page d'accueil",
+    
+    "passwordTitle": "Mot de Passe Requis",
+    "passwordSubtitle": "Ce lien est protégé par un mot de passe.",
+    "destination": "Destination",
+    "passwordLabel": "Mot de passe",
+    "passwordPlaceholder": "Entrez le mot de passe",
+    "verifying": "Vérification...",
+    "unlockLink": "Déverrouiller le lien",
+    "secureConnection": "Connexion Sécurisée",
+    "secureNote": "Votre mot de passe est crypté pendant le transit et jamais stocké.",
+    "contactCreator": "Vous n'avez pas le mot de passe ? Contactez le créateur du lien.",
+    "verificationFailed": "Vérification échouée. Veuillez réessayer.",
+    "incorrectPassword": "Mot de passe incorrect. Veuillez réessayer.",
+    
+    "redirectingTitle": "Redirection",
+    "redirectingSubtitle": "Vous serez redirigé sous peu.",
+    "takingYouTo": "Vous emmène vers",
+    "totalClicks": "Nombre Total de Clics",
+    "linkStatus": "Statut du Lien",
+    "statusActive": "Actif",
+    "statusDisabled": "Désactivé",
+    "continueNow": "Continuer Maintenant",
+    "verifiedLink": "Lien Vérifié",
+    "verifiedNote": "Cette destination a été vérifiée comme sûre à visiter.",
+    "poweredBy": "Propulsé par TurboLink"
+  },
   "errors": {
     "shortUsername": "Le nom d'utilisateur doit contenir au moins 3 caractères.",
     "required": "Ce champ est obligatoire.",
@@ -161,32 +199,72 @@
     "customUrlAlreadyExists" : "L'identifiant court (alias) demandé est déjà utilisé par un autre lien."
 
   },
+
     "editLinksPage": {
-      "header_title": "Modifier le Lien",
-      "header_description": "Mettez à jour l'URL de destination ou modifiez le slug du lien court.",
-      "form_label_short_link_slug": "Slug du Lien Court",
-      "form_label_destination_url": "URL de Destination",
-      "form_note_slug_warning": "Modifier ceci rompra les liens existants.",
-      "form_error_prefix": "Erreur",
-      "form_error_required_fields": "Les champs de l'URL courte et de l'URL de destination sont obligatoires.",
-      "form_error_server_default": "Échec de la mise à jour en raison d'une erreur de serveur.",
-      "settings_title": "Paramètres Avancés",
-      "settings_label_max_clicks": "Limite de Clics Max.",
-      "settings_label_password_protection": "Protection par Mot de Passe",
-      "settings_placeholder_max_clicks": "ex: 100 (Laisser vide pour illimité)",
-      "settings_placeholder_password": "Entrez un nouveau mot de passe ou laissez vide pour conserver l'actuel",
-      "settings_note_max_clicks": "Le lien sera désactivé automatiquement après ce nombre de clics.",
-      "settings_note_password_change": "Soumettez avec un nouveau mot de passe pour le changer, ou soumettez à blanc pour supprimer la protection.",
-      "analytics_total_clicks": "Total des Clics",
-      "analytics_created_on": "Créé le",
-      "button_saving": "Enregistrement...",
-      "button_save_changes": "Enregistrer les Modifications",
-      "toast_success": "mis à jour avec succès",
       "loading_data": "Chargement des données du lien...",
-      "loading_error_default": "Le lien avec l'ID {{short_url}} n'a pas pu être chargé.",
-      "error_title": "Lien Introuvable",
-      "error_go_back": "Retourner aux Liens"
-    },
+      "loading_error_default": "Impossible de récupérer les données pour l'URL courte '{short_url}'. Elle pourrait ne pas exister ou une erreur API s'est produite.",
+      "error_title": "Erreur de Récupération des Données",
+      "error_go_back": "Retour aux Liens",
+      "header_title": "Modifier la Configuration du Lien",
+      "header_description": "Mettez à jour les paramètres et préférences de votre lien.",
+      
+      "label_short_link": "Votre Lien Court",
+      "button_copy_link": "Copier le Lien",
+      "button_copied": "Copié",
+      "button_visit": "Visiter le Lien",
+  
+      "card_title_config": "Configuration",
+      "card_desc_config": "Mettez à jour les paramètres et préférences de votre lien.",
+      
+      "label_destination_url": "URL de Destination",
+      "desc_destination_url": "L'URL vers laquelle les visiteurs seront redirigés.",
+      
+      "label_link_status": "Statut du Lien",
+      "desc_link_status": "Contrôlez si ce lien court est actuellement actif et redirige les utilisateurs.",
+      "status_live": "Le lien est actuellement ACTIF. Les utilisateurs seront redirigés.",
+      "status_disabled": "Le lien est DÉSACTIVÉ. Les utilisateurs verront une page 404.",
+      
+      "heading_advanced_settings": "Paramètres Avancés",
+      
+      "label_click_limit": "Limite de Clics",
+      "placeholder_unlimited": "Illimité",
+      "desc_click_limit": "Nombre maximal de clics avant l'expiration du lien.",
+      
+      "label_password_protection": "Protection par Mot de Passe",
+      "desc_password_protection": "Nécessite un mot de passe pour accéder au lien.",
+      "label_password": "Mot de Passe",
+      "placeholder_password": "Entrez un mot de passe sécurisé",
+      "desc_password_leave_empty": "Laissez vide pour conserver le mot de passe actuel inchangé.",
+      
+      "error_heading": "Erreur",
+      "button_cancel": "Annuler",
+      "button_saving": "Sauvegarde...",
+      "button_save_changes": "Enregistrer les Modifications",
+      
+      "form_error_required_fields": "L'URL de destination est requise.",
+      "form_error_server_default": "Une erreur inconnue s'est produite lors de l'enregistrement des modifications.",
+      "toast_success": "Lien mis à jour avec succès !",
+      "toast_copy_success": "Lien copié dans le presse-papiers !",
+  
+      "stats_title": "Statistiques",
+      "stats_description": "Aperçu des performances du lien.",
+      "stats_total_clicks": "Total des Clics",
+      "stats_created": "Créé",
+      "stats_password": "Mot de Passe",
+      "stats_protected": "Protégé",
+      "stats_none": "Aucun",
+      "stats_click_limit": "Limite de Clics",
+      "stats_unlimited": "Illimité",
+      "stats_status": "Statut",
+      "status_active": "Actif",
+      "status_inactive": "Inactif",
+      
+      "tips_title": "Conseils Rapides",
+      "tip_password": "La protection par mot de passe ajoute de la sécurité",
+      "tip_limit": "Les limites de clics aident à contrôler l'accès",
+      "tip_saved": "Les changements sont enregistrés immédiatement"
+    }
+  ,
   "unauthorized": {
     "unauthorizedTitle": "Accès Refusé", 
     "unauthorizedSubtitle": "Vous n'avez pas l'autorisation d'afficher cette page. Veuillez vous connecter à un compte autorisé.",

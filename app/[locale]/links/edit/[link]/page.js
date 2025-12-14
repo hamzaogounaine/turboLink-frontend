@@ -1,5 +1,5 @@
 "use client"
-import EditLinkPage from '@/components/app/linksPage/EditLinkComponent'
+import EditLinkPage from '@/components/app/LinkEditPage/EditLinkPage'
 import ProtectedRoute from '@/components/protectedRoute'
 import { useParams } from 'next/navigation'
 import React from 'react'

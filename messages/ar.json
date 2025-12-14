@@ -142,6 +142,43 @@
     "rateLimitExceeded": "عدد كبير جدًا من الطلبات. يرجى الانتظار للحظة قبل المحاولة مرة أخرى.",
     "unknownError": "حدث خطأ غير متوقع. يرجى التحقق من الشبكة."
   },
+  "redirectPage" : {
+    "loadingTitle": "جاري تحميل الرابط",
+    "loadingSubtitle": "الرجاء الانتظار...",
+    
+    "errorTitle": "لم يتم العثور على الرابط",
+    "errorSubtitle": "فشل في تحميل الرابط. قد يكون هذا الرابط منتهي الصلاحية أو غير صالح.",
+    
+    "disabledTitle": "الرابط مُعطّل",
+    "disabledSubtitle": "الرابط الذي تحاول الوصول إليه مُعطّل.",
+    
+    "goHome": "الذهاب إلى الصفحة الرئيسية",
+    
+    "passwordTitle": "كلمة المرور مطلوبة",
+    "passwordSubtitle": "هذا الرابط محمي بكلمة مرور.",
+    "destination": "الوجهة",
+    "passwordLabel": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "verifying": "جاري التحقق...",
+    "unlockLink": "فتح قفل الرابط",
+    "secureConnection": "اتصال آمن",
+    "secureNote": "يتم تشفير كلمة المرور الخاصة بك أثناء النقل ولا يتم تخزينها أبدًا.",
+    "contactCreator": "ليس لديك كلمة المرور؟ اتصل بمنشئ الرابط.",
+    "verificationFailed": "فشل التحقق. الرجاء المحاولة مرة أخرى.",
+    "incorrectPassword": "كلمة مرور خاطئة. الرجاء المحاولة مرة أخرى.",
+    
+    "redirectingTitle": "جاري إعادة التوجيه",
+    "redirectingSubtitle": "ستتم إعادة توجيهك قريباً.",
+    "takingYouTo": "يأخذك إلى",
+    "totalClicks": "إجمالي النقرات",
+    "linkStatus": "حالة الرابط",
+    "statusActive": "نشط",
+    "statusDisabled": "معطّل",
+    "continueNow": "المتابعة الآن",
+    "verifiedLink": "رابط موثوق",
+    "verifiedNote": "تم التحقق من أن هذه الوجهة آمنة للزيارة.",
+    "poweredBy": "مدعوم بواسطة TurboLink"
+  },
   "errors": {
     "shortUsername": "يجب أن يحتوي اسم المستخدم على 3 أحرف على الأقل.",
     "required": "هذا الحقل مطلوب.",
@@ -162,32 +199,72 @@
     "invalidUrlFormat": "صيغة الرابط (URL) المقدمة غير صحيحة أو غير مكتملة.",
     "customUrlAlreadyExists" : "الرمز القصير أو الاسم المستعار المطلوب مسبقًا مستخدم من قبل رابط آخر."
   },
+  
     "editLinksPage": {
-      "header_title": "تعديل الرابط",
-      "header_description": "حدّث عنوان URL الوجهة أو غيّر اسم الرابط المختصر (slug).",
-      "form_label_short_link_slug": "اسم الرابط المختصر (Slug)",
-      "form_label_destination_url": "عنوان URL الوجهة",
-      "form_note_slug_warning": "تغيير هذا سيعطل الروابط الموجودة حاليًا.",
-      "form_error_prefix": "خطأ",
-      "form_error_required_fields": "حقلا الرابط المختصر ورابط الوجهة مطلوبان.",
-      "form_error_server_default": "فشل التحديث بسبب خطأ في الخادم.",
-      "settings_title": "الإعدادات المتقدمة",
-      "settings_label_max_clicks": "الحد الأقصى للنقرات",
-      "settings_label_password_protection": "الحماية بكلمة مرور",
-      "settings_placeholder_max_clicks": "مثل: 100 (اتركه فارغاً بلا حدود)",
-      "settings_placeholder_password": "أدخل كلمة مرور جديدة أو اتركها فارغة للاحتفاظ بالكلمة الحالية",
-      "settings_note_max_clicks": "سيتم إلغاء تفعيل الرابط تلقائياً بعد هذا العدد من النقرات.",
-      "settings_note_password_change": "أرسل بكلمة مرور جديدة لتغييرها، أو أرسل فارغًا لإزالة الحماية.",
-      "analytics_total_clicks": "إجمالي النقرات",
-      "analytics_created_on": "تاريخ الإنشاء",
+      "loading_data": "جلب بيانات الرابط...",
+      "loading_error_default": "تعذر استرداد البيانات للرابط القصير '{short_url}'. قد لا يكون موجودًا أو حدث خطأ في واجهة برمجة التطبيقات.",
+      "error_title": "خطأ في استرداد البيانات",
+      "error_go_back": "العودة إلى الروابط",
+      "header_title": "تعديل إعدادات الرابط",
+      "header_description": "حدث إعدادات الرابط والتفضيلات الخاصة بك.",
+      
+      "label_short_link": "رابطك القصير",
+      "button_copy_link": "نسخ الرابط",
+      "button_copied": "تم النسخ",
+      "button_visit": "زيارة الرابط",
+  
+      "card_title_config": "الإعدادات",
+      "card_desc_config": "حدث إعدادات الرابط والتفضيلات الخاصة بك.",
+      
+      "label_destination_url": "عنوان URL الوجهة",
+      "desc_destination_url": "عنوان URL الذي سيتم توجيه الزوار إليه.",
+      
+      "label_link_status": "حالة الرابط",
+      "desc_link_status": "تحكم فيما إذا كان هذا الرابط القصير نشطًا حاليًا ويوجه المستخدمين.",
+      "status_live": "الرابط حاليًا نَشِط. سيتم توجيه المستخدمين.",
+      "status_disabled": "الرابط مُعَطَّل. سيشاهد المستخدمون صفحة 404.",
+      
+      "heading_advanced_settings": "إعدادات متقدمة",
+      
+      "label_click_limit": "حد النقرات",
+      "placeholder_unlimited": "غير محدود",
+      "desc_click_limit": "الحد الأقصى لعدد النقرات قبل انتهاء صلاحية الرابط.",
+      
+      "label_password_protection": "حماية بكلمة مرور",
+      "desc_password_protection": "يتطلب كلمة مرور للوصول إلى الرابط.",
+      "label_password": "كلمة المرور",
+      "placeholder_password": "أدخل كلمة مرور آمنة",
+      "desc_password_leave_empty": "اترك فارغًا للاحتفاظ بكلمة المرور الحالية دون تغيير.",
+      
+      "error_heading": "خطأ",
+      "button_cancel": "إلغاء",
       "button_saving": "جاري الحفظ...",
       "button_save_changes": "حفظ التغييرات",
-      "toast_success": "تم التحديث بنجاح",
-      "loading_data": "جاري تحميل بيانات الرابط...",
-      "loading_error_default": "تعذر تحميل الرابط بالمعرف {{short_url}}.",
-      "error_title": "الرابط غير موجود",
-      "error_go_back": "العودة إلى الروابط"
-    },
+      
+      "form_error_required_fields": "عنوان URL للوجهة مطلوب.",
+      "form_error_server_default": "حدث خطأ غير معروف أثناء حفظ التغييرات.",
+      "toast_success": "تم تحديث الرابط بنجاح!",
+      "toast_copy_success": "تم نسخ الرابط إلى الحافظة!",
+  
+      "stats_title": "الإحصائيات",
+      "stats_description": "نظرة عامة على أداء الرابط.",
+      "stats_total_clicks": "إجمالي النقرات",
+      "stats_created": "تاريخ الإنشاء",
+      "stats_password": "كلمة المرور",
+      "stats_protected": "محمي",
+      "stats_none": "لا يوجد",
+      "stats_click_limit": "حد النقرات",
+      "stats_unlimited": "غير محدود",
+      "stats_status": "الحالة",
+      "status_active": "نشط",
+      "status_inactive": "غير نشط",
+      
+      "tips_title": "نصائح سريعة",
+      "tip_password": "تضيف حماية كلمة المرور الأمان",
+      "tip_limit": "تساعد حدود النقرات في التحكم في الوصول",
+      "tip_saved": "يتم حفظ التغييرات على الفور"
+    }
+  ,
   "unauthorized" : {
     "unauthorizedTitle": "وصول غير مصرح به", 
     "unauthorizedSubtitle": "ليس لديك إذن لعرض هذه الصفحة. يرجى تسجيل الدخول بحساب مصرح له.",

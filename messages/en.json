@@ -5,7 +5,8 @@
     "signup": "Sign Up",
     "profile": "Profile",
     "settings": "Settings",
-    "myLinks" : "My Links"
+    "myLinks" : "My Links",
+    "logout" : "Logout"
   },
   "login": {
     "title": "Log in to your account",
@@ -141,30 +142,105 @@
     "unknownError": "An unexpected error occurred. Please check the network."
   },
     "editLinksPage": {
-      "header_title": "Edit Link",
-      "header_description": "Update the destination URL or change the short link slug.",
-      "form_label_short_link_slug": "Short Link Slug",
-      "form_label_destination_url": "Destination URL",
-      "form_note_slug_warning": "Changing this will break existing links.",
-      "form_error_prefix": "Error",
-      "form_error_required_fields": "Both the short URL and destination URL fields are required.",
-      "form_error_server_default": "Update failed due to a server error.",
-      "settings_title": "Advanced Settings",
-      "settings_label_max_clicks": "Max Clicks Limit",
-      "settings_label_password_protection": "Password Protection",
-      "settings_placeholder_max_clicks": "e.g., 100 (Leave blank for unlimited)",
-      "settings_placeholder_password": "Enter new password or leave blank to keep current",
-      "settings_note_max_clicks": "The link will deactivate automatically after this many clicks.",
-      "settings_note_password_change": "Submit with a new password to change it, or submit blank to remove protection.",
-      "analytics_total_clicks": "Total Clicks",
-      "analytics_created_on": "Created On",
+      "loading_data": "Fetching link data...",
+      "loading_error_default": "Could not retrieve data for short URL '{short_url}'. It may not exist or an API error occurred.",
+      "error_title": "Data Retrieval Error",
+      "error_go_back": "Back to Links",
+      "header_title": "Edit Link Configuration",
+      "header_description": "Update your link settings and preferences.",
+      
+      "label_short_link": "Your Short Link",
+      "button_copy_link": "Copy Link",
+      "button_copied": "Copied",
+      "button_visit": "Visit Link",
+      
+      "card_title_config": "Configuration",
+      "card_desc_config": "Update your link settings and preferences.",
+      
+      "label_destination_url": "Destination URL",
+      "desc_destination_url": "The URL where visitors will be redirected.",
+      
+      "label_link_status": "Link Status",
+      "desc_link_status": "Control whether this short link is currently active and redirects users.",
+      "status_live": "Link is currently LIVE. Users will be redirected.",
+      "status_disabled": "Link is DISABLED. Users will see a 404 page.",
+      
+      "heading_advanced_settings": "Advanced Settings",
+      
+      "label_click_limit": "Click Limit",
+      "placeholder_unlimited": "Unlimited",
+      "desc_click_limit": "Maximum number of clicks before the link expires.",
+      
+      "label_password_protection": "Password Protection",
+      "desc_password_protection": "Require password to access link.",
+      "label_password": "Password",
+      "placeholder_password": "Enter a secure password",
+      "desc_password_leave_empty": "Leave empty to keep the current password unchanged.",
+      
+      "error_heading": "Error",
+      "button_cancel": "Cancel",
       "button_saving": "Saving...",
       "button_save_changes": "Save Changes",
-      "toast_success": "updated successfully",
-      "loading_data": "Loading link data...",
-      "loading_error_default": "The link with ID {{short_url}} could not be loaded.",
-      "error_title": "Link Not Found",
-      "error_go_back": "Go Back to Links"
+      
+      "form_error_required_fields": "Destination URL is required.",
+      "form_error_server_default": "An unknown error occurred while saving changes.",
+      "toast_success": "Link updated successfully!",
+      "toast_copy_success": "Link copied to clipboard!",
+  
+      "stats_title": "Statistics",
+      "stats_description": "Link performance overview.",
+      "stats_total_clicks": "Total Clicks",
+      "stats_created": "Created",
+      "stats_password": "Password",
+      "stats_protected": "Protected",
+      "stats_none": "None",
+      "stats_click_limit": "Click Limit",
+      "stats_unlimited": "Unlimited",
+      "stats_status": "Status",
+      "status_active": "Active",
+      "status_inactive": "Inactive",
+      
+      "tips_title": "Quick Tips",
+      "tip_password": "Password protection adds security",
+      "tip_limit": "Click limits help control access",
+      "tip_saved": "Changes are saved immediately"
+    },
+    "redirectPage" : {
+      "loadingTitle": "Loading Link",
+      "loadingSubtitle": "Please wait...",
+      
+      "errorTitle": "Link Not Found",
+      "errorSubtitle": "Failed to load link. This link may be expired or invalid.",
+      
+      "disabledTitle": "Link Disabled",
+      "disabledSubtitle": "The link you're reaching is disabled.",
+      
+      "goHome": "Go to Homepage",
+      
+      "passwordTitle": "Password Required",
+      "passwordSubtitle": "This link is password protected.",
+      "destination": "Destination",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter password",
+      "verifying": "Verifying...",
+      "unlockLink": "Unlock Link",
+      "secureConnection": "Secure Connection",
+      "secureNote": "Your password is encrypted in transit and never stored.",
+      "contactCreator": "Don't have the password? Contact the link creator.",
+      "verificationFailed": "Verification failed. Please try again.",
+      "incorrectPassword": "Incorrect password. Please try again.",
+      
+      "redirectingTitle": "Redirecting",
+      "redirectingSubtitle": "You will be redirected shortly.",
+      "takingYouTo": "Taking you to",
+      "totalClicks": "Total Clicks",
+      "linkStatus": "Link Status",
+      "statusActive": "Active",
+      "statusDisabled": "Disabled",
+      "continueNow": "Continue Now",
+      "verifiedLink": "Verified Link",
+      "verifiedNote": "This destination has been verified as safe to visit.",
+      "poweredBy": "Powered by TurboLink"
     },
   "errors": {
     "shortUsername": "Username must contain at least 3 characters.",

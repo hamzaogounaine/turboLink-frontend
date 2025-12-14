@@ -159,7 +159,7 @@ export default function Home() {
               </div>
             </div>
             <div>
-                {error && <p className='text-destructive text-center'>{error}</p>}
+                {error && <p className='error text-center'>{error}</p>}
             </div>
             
             {/* Submit Button */}
