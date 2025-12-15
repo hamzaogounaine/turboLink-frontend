@@ -189,10 +189,12 @@ const LinkCard = ({ link, mutate }) => {
                       <span>Edit Link</span>
                     </DropdownMenuItem>
                   </Link>
+                  <Link href={`analytics/${link.short_url}`}>
                   <DropdownMenuItem>
                     <BarChart3 className="mr-2 h-4 w-4" />
                     <span>View Analytics</span>
                   </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLinkHide}>
                     <XCircle className="mr-2 h-4 w-4" />
@@ -305,10 +307,12 @@ const LinkCard = ({ link, mutate }) => {
                   <span>Edit Link</span>
                 </DropdownMenuItem>
               </Link>
-              <DropdownMenuItem>
-                <BarChart3 className="mr-2 h-4 w-4" />
-                <span>View Analytics</span>
-              </DropdownMenuItem>
+              <Link href={`analytics/${link.short_url}`}>
+                  <DropdownMenuItem>
+                    <BarChart3 className="mr-2 h-4 w-4" />
+                    <span>View Analytics</span>
+                  </DropdownMenuItem>
+                  </Link>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLinkHide}>
                 <XCircle className="mr-2 h-4 w-4" />
@@ -346,7 +350,7 @@ const LinkCard = ({ link, mutate }) => {
               Copy URL
             </>
           )}
-        </Button>
+        </Button> 
 
         <Button
           size="sm"

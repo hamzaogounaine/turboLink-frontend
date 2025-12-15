@@ -22,7 +22,7 @@ const fetcher = async (url) => {
   }
 };
 
-const useRedirectLogic = (t) => { // Adding 't' here if it's not global
+const useRedirectLogic = () => { // Adding 't' here if it's not global
   const [passwordState, setPasswordState] = useState({
     password: '',
     showPassword: false,
