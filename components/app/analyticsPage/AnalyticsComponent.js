@@ -134,7 +134,7 @@ const AnalyticsComponent = () => {
               <p class="text-muted-foreground text-sm">Unique Visitors</p>
             </div>
             <div class="bg-background rounded-xl p-5 text-center h-full flex flex-col justify-center">
-              <p class="text-3xl font-bold text-primary">{uniqueClicks && totalClicks && Math.floor(uniqueClicks/totalClicks*100) }%</p>
+              <p class="text-3xl font-bold text-primary">{uniqueClicks && totalClicks && Math.ceil(uniqueClicks/totalClicks*100) }%</p>
               <p class="text-muted-foreground text-sm">Unique Rate</p>
             </div>
             {/* <div class="bg-background rounded-xl p-5 text-center">
