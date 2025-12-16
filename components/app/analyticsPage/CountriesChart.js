@@ -1,126 +1,130 @@
 "use client"
 
-import React, { useEffect, useRef, useMemo } from 'react';
+import * as React from "react"
+import { TrendingUp } from "lucide-react"
+import { Label, Pie, PieChart } from "recharts"
 
-// IMPORTANT: For this component to work, the following scripts 
-// MUST BE LOADED in your root HTML document (e.g., layout.tsx or index.html) 
-// exactly as you provided them: anychart-base, anychart-map, world.js, etc.
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  
+} from "@/components/ui/chart"
 
-// We assume 'anychart' is available globally, as per your example.
+// NOTE: This component assumes that the necessary UI components 
+// (Card, ChartContainer, etc.) are available via the provided paths.
 
-// === Data Mapping (Needs to be external/expanded in your app) ===
-const COUNTRY_NAME_TO_ISO2 = {
-    "United States": "US", "United Kingdom": "GB", "Germany": "DE", "Canada": "CA", 
-    "Unknown": "NA", "Brazil": "BR", "India": "IN", "Australia": "AU", 
-    "Japan": "JP", "China": "CN", "Russia": "RU", "Mexico": "MX",
-    // ... expand this list ...
-};
+/**
+ * A donut chart component that displays categorical data (like browser usage)
+ * with a total count displayed in the center.
+ */
 
+// === Sample Data (Replace with your actual data source) ===
+// const chartData = [
+//   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+//   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+//   { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
+//   { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+//   { browser: "other", visitors: 190, fill: "var(--color-other)" },
+// ]
 
-// =============================================================
+// === Chart Configuration for Tooltip/Legend Colors ===
+const chartConfig = {
+  visitors: {
+    label: "Visitors",
+  },
+  chrome: {
+    label: "Chrome",
+    color: "var(--chart-1)",
+  },
+  safari: {
+    label: "Safari",
+    color: "var(--chart-2)",
+  },
+  firefox: {
+    label: "Firefox",
+    color: "var(--chart-3)",
+  },
+  edge: {
+    label: "Edge",
+    color: "var(--chart-4)",
+  },
+  other: {
+    label: "Other",
+    color: "var(--chart-5)",
+  },
+} 
 
-export function GeoMapChart({ data }) {
-    
-    const containerRef = useRef(null);
+export function CountriesChart({data : chartData}) {
+  const totalVisitors = React.useMemo(() => {
+    return chartData.reduce((acc, curr) => acc + curr.count, 0)
+  }, [])
 
-    // 1. Transform the data into the map's required structure
-    const mapData = useMemo(() => {
-        return data
-            // Filter out 'Unknown' if you don't want it plotted (though we map it for safety)
-            .filter(item => item.count > 0)
-            .map(item => {
-                const iso2 = COUNTRY_NAME_TO_ISO2[item.name] || 'Germany'; // Fallback to 'NA' if name not mapped
-                return {
-                    id: iso2, // The 2-letter code required by the world map
-                    value: item.count, // The click count
-                    name: item.name, // The full name for the tooltip
-                };
-            });
-    }, [data]);
-    
-    // 2. Map Initialization Logic (Runs when data changes)
-    useEffect(() => {
-        if (!containerRef.current || !mapData.length) return;
-
-        // Cleanup function for when the component unmounts
-        let mapInstance
-
-        try {
-            // Set the theme before any chart drawing
-            anychart.theme('darkBlue'); 
-
-            // Create the map instance
-            mapInstance = anychart.map();
-
-            // Set the geoData using the world map registered in the CDN script
-            mapInstance.geoData('anychart.maps.world');
-
-            // Set the chart title
-            mapInstance.title('Geographical Click Breakdown (Choropleth)');
-
-            // Creating a data set from our transformed array
-            const dataSet = anychart.data.set(mapData);
-
-            // Define the series
-            var series = mapInstance.choropleth(dataSet);
-
-            // Adjust the series: use the 'id' field to match map regions
-            series.geoIdField('id'); // Matches the 'id' (ISO2) we created in mapData
-
-            // Define the color scale based on click count (value)
-            mapInstance.colorScale(
-                anychart.scales.ordinalColor().ranges([
-                    { less: 1, color: '#1a1a1a' },
-                    { from: 1, to: 10, color: '#4d4d4d' },
-                    { from: 10, to: 50, color: '#5C3E8A' },
-                    { from: 50, color: '#9933CC' }
-                ])
-            );
-            
-            // Apply tooltip formatting similar to your example
-            mapInstance
-                .tooltip()
-                .useHtml(true)
-                .titleFormat(function () {
-                    // Use the country name from the data (not the map's default)
-                    return this.getData('name') || this.id; 
-                })
-                .format(function () {
-                    const value = this.value || 0;
-                    return `<strong>Total Clicks: </strong> <span style="color: #9933CC; font-size: 14px;">${value}</span>`;
-                });
-
-            // Optional: Create zoom controls
-            var zoomController = anychart.ui.zoom();
-            zoomController.render(mapInstance);
-
-            // Set container id and initiate chart drawing
-            mapInstance.container(containerRef.current);
-            mapInstance.draw();
-
-        } catch (e) {
-            console.error("AnyChart Map initialization failed:", e);
-        }
-
-        // Cleanup function: Dispose of the map instance when the component unmounts
-        return () => {
-            if (mapInstance) {
-                mapInstance.dispose();
-            }
-        };
-    }, [mapData]); // Rerun effect when mapData (derived from data) changes
-
-    return (
-        <div className="flex flex-col h-full p-4  rounded-xl">
-             <div className="flex justify-between items-start mb-4">
-                <h3 className="text-lg font-semibold">Geographical Click Map</h3>
-            </div>
-            
-            {/* The map rendering area */}
-            <div className="flex-grow h-full">
-                {/* 3. The container div for AnyChart */}
-                <div ref={containerRef} className="w-full h-full" />
-            </div>
-        </div>
-    );
+  return (
+    <Card className="flex flex-col h-full">
+      <CardHeader className="items-center pb-0">
+        <CardTitle>Pie Chart - Donut with Text</CardTitle>
+        <CardDescription>January - June 2024</CardDescription>
+      </CardHeader>
+      <CardContent className="flex-1 pb-0">
+        <ChartContainer
+          config={chartConfig}
+          className="mx-auto aspect-square max-h-[250px]"
+        >
+          <PieChart>
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Pie
+              data={chartData}
+              dataKey="count"
+              nameKey="name"
+              innerRadius={60}
+              strokeWidth={5}
+            >
+              <Label
+                content={({ viewBox }) => {
+                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                    return (
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          className="fill-foreground text-3xl font-bold"
+                        >
+                          {totalVisitors.toLocaleString()}
+                        </tspan>
+                        <tspan
+                          x={viewBox.cx}
+                          y={(viewBox.cy || 0) + 24}
+                          className="fill-muted-foreground"
+                        >
+                          Visitors
+                        </tspan>
+                      </text>
+                    )
+                  }
+                }}
+              />
+            </Pie>
+          </PieChart>
+        </ChartContainer>
+      </CardContent>
+      
+    </Card>
+  )
 }

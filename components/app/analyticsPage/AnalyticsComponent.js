@@ -4,7 +4,8 @@ import { ClicksChart } from "./ClicksChart";
 import { useAnalyticsLogic } from "./useAnalyticsLogic";
 import { BrowsersChart } from "./BrowsersChart";
 import { OSChart } from "./OsChart";
-import { GeoMapChart } from "./CountriesChart";
+import { CountriesChart, GeoMapChart } from "./CountriesChart";
+import { ReferrerChart } from "./ReferrerChart";
 
 
 
@@ -13,6 +14,9 @@ const AnalyticsComponent = () => {
 
   const {data , isLoading , clicksAnalytics , urlAnalytics} = useAnalyticsLogic()
   const [formedClicks , setFormedClicks ] = useState([])
+  const [totalClicks , setTotalClicks] = useState()
+  const [uniqueClicks , setUniqueClicks] = useState()
+  
 
   function transformClicksForChart(details) {
     console.log(details)
@@ -32,6 +36,7 @@ const AnalyticsComponent = () => {
       dailyAggregates[dateKey].ips.add(ip);
     });
   
+    
     // Convert the aggregated map into the final array format
     return Object.keys(dailyAggregates)
       .sort() // Sort by date
@@ -44,8 +49,14 @@ const AnalyticsComponent = () => {
 
   useEffect(() => {
     setFormedClicks(transformClicksForChart(clicksAnalytics))
-    console.log(urlAnalytics)
+    console.log(clicksAnalytics.countries)
+   
   }, [isLoading])
+
+  useEffect(() => {
+    setTotalClicks(formedClicks.reduce((acc , val) => acc + val.clicks , 0))
+    setUniqueClicks(formedClicks.reduce((acc , val) => acc + val.unique , 0))
+  },[formedClicks])
 
   return (
     <div>
@@ -98,7 +109,7 @@ const AnalyticsComponent = () => {
               <span class="text-gray-400 cursor-pointer">❌</span>
             </div>
             <div class="h-80   border border-gray-700 rounded-lg">
-              {isLoading ? <p class="text-gray-500 italic flex justify-center h-full items-center">No Data Available for Clicks Over Time</p>
+              {!formedClicks ? <p class="text-gray-500 italic flex justify-center h-full items-center">No Data Available for Clicks Over Time</p>
              : <ClicksChart data={formedClicks}/>}
             </div>
             {/* <div class="flex mt-3 space-x-4 text-sm text-gray-400">
@@ -113,53 +124,44 @@ const AnalyticsComponent = () => {
             </div> */}
           </section>
 
-          <aside class="lg:col-span-1 space-y-4">
-            <div class="bg-background rounded-xl p-5 text-center">
-              <p class="text-3xl font-bold text-primary ">{clicksAnalytics && clicksAnalytics.length}</p>
+          <aside class="lg:col-span-1 gap-4 flex flex-col justify-between">
+            <div class="bg-background rounded-xl p-5 text-center h-full flex flex-col justify-center">
+              <p class="text-3xl font-bold text-primary ">{totalClicks && totalClicks}</p>
               <p class="text-muted-foreground text-sm">Total Clicks</p>
             </div>
-            <div class="bg-background rounded-xl p-5 text-center">
-              <p class="text-3xl font-bold text-primary">0</p>
+            <div class="bg-background rounded-xl p-5 text-center h-full flex flex-col justify-center">
+              <p class="text-3xl font-bold text-primary">{uniqueClicks && uniqueClicks}</p>
               <p class="text-muted-foreground text-sm">Unique Visitors</p>
             </div>
-            <div class="bg-background rounded-xl p-5 text-center">
-              <p class="text-3xl font-bold text-primary">0%</p>
+            <div class="bg-background rounded-xl p-5 text-center h-full flex flex-col justify-center">
+              <p class="text-3xl font-bold text-primary">{uniqueClicks && totalClicks && uniqueClicks/totalClicks*100}%</p>
               <p class="text-muted-foreground text-sm">Unique Rate</p>
             </div>
-            <div class="bg-background rounded-xl p-5 text-center">
+            {/* <div class="bg-background rounded-xl p-5 text-center">
               <p class="text-3xl font-bold text-primary">0 ms</p>
               <p class="text-muted-foreground text-sm">Avg. Response Time</p>
-            </div>
+            </div> */}
           </aside>
         </div>
 
         <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-background rounded-xl shadow-lg p-5 flex flex-col justify-center items-center h-64">
-            <div class="w-full flex justify-between items-center mb-4">
-              <h3 class="text-lg font-semibold">Short URLs</h3>
-              <span class="text-gray-400 cursor-pointer">❌</span>
-            </div>
-            <div class="text-center flex-grow flex flex-col justify-center items-center">
-              <span class="text-4xl mb-2 text-gray-500">🔗</span>
-              <p class="text-gray-400 font-medium">No Short Links Found</p>
-              <p class="text-xs text-gray-500 mt-1">
-                Create your first link to start tracking performance
-              </p>
-            </div>
-          </div>
+         
 
           <div class="bg-background rounded-xl shadow-lg p-5 flex flex-col justify-center items-center h-64">
             <div class="w-full flex justify-between items-center mb-4">
               <h3 class="text-lg font-semibold">Referrers</h3>
               <span class="text-gray-400 cursor-pointer">❌</span>
             </div>
-            <div class="text-center flex-grow flex flex-col justify-center items-center">
+           {!urlAnalytics.referrers ? <div class="text-center flex-grow flex flex-col justify-center items-center">
               <span class="text-4xl mb-2 text-gray-500">↩️</span>
               <p class="text-gray-400 font-medium">No Referrer Data</p>
               <p class="text-xs text-gray-500 mt-1">
                 Referrer info will display once people click your links.
               </p>
             </div>
+            :
+            <ReferrerChart data={urlAnalytics.referrers} />  
+          }
           </div>
 
           <div class="bg-background rounded-xl shadow-lg p-5 flex flex-col justify-center items-center h-64">
@@ -168,13 +170,13 @@ const AnalyticsComponent = () => {
               <span class="text-gray-400 cursor-pointer">❌</span>
             </div>
             <div class="text-center flex-grow flex flex-col justify-center items-center">
-              {/* <span class="text-4xl mb-2 text-gray-500">🌐</span>
+              {!urlAnalytics.browsers.length ? <><span class="text-4xl mb-2 text-gray-500">🌐</span>
               <p class="text-gray-400 font-medium">No Browser Data</p>
               <p class="text-xs text-gray-500 mt-1">
                 Browser analysis will show which users click your links
-              </p> */}
-
-              {<BrowsersChart data={urlAnalytics["browsers"]}/>}
+              </p></>
+              :
+              <BrowsersChart data={urlAnalytics.browsers}/>}
             </div>
           </div>
 
@@ -184,28 +186,13 @@ const AnalyticsComponent = () => {
               <span class="text-gray-400 cursor-pointer">❌</span>
             </div>
             <div class="text-center flex-grow flex flex-col justify-center items-center">
-             {!urlAnalytics['os'] ? <> <span class="text-4xl mb-2 text-gray-500">💻</span>
+             {!urlAnalytics.os.length ? <> <span class="text-4xl mb-2 text-gray-500">💻</span>
               <p class="text-gray-400 font-medium">No Platform Data</p>
               <p class="text-xs text-gray-500 mt-1">
                 Operating system stats will populate as users engage with your
                 links
               </p> </>
               :<OSChart data={urlAnalytics['os']}/>}
-            </div>
-          </div>
-
-          <div class="bg-background rounded-xl shadow-lg p-5 flex flex-col justify-center items-center h-64">
-            <div class="w-full flex justify-between items-center mb-4">
-              <h3 class="text-lg font-semibold">Cities</h3>
-              <span class="text-gray-400 cursor-pointer">❌</span>
-            </div>
-            <div class="text-center flex-grow flex flex-col justify-center items-center">
-              <span class="text-4xl mb-2 text-gray-500">🏙️</span>
-              <p class="text-gray-400 font-medium">No City Data</p>
-              <p class="text-xs text-gray-500 mt-1">
-                Geographic data from cities will display when visitors click
-                your links
-              </p>
             </div>
           </div>
 
@@ -221,7 +208,7 @@ const AnalyticsComponent = () => {
                 Country data will display once visitors engage with your links
               </p>
             </div> */}
-            {<GeoMapChart data={urlAnalytics['countries']} />}
+            {<CountriesChart data={urlAnalytics.countries} />}
           </div>
         </section>
       </div>

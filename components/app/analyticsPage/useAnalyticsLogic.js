@@ -79,12 +79,14 @@ export const useAnalyticsLogic = () => {
         const browsers = aggregateCounts(details, 'browser');
         const os = aggregateCounts(details, 'os');
         const countries = aggregateCounts(details, 'country'); // Always aggregate country, even if null
+        const referrers = aggregateCounts(details , "referrer")
     
         // 4. Return the structured data
         return {
             browsers,
             os,
-            countries
+            countries,
+            referrers
         };
     }, [rawData]);
 
