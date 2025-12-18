@@ -21,7 +21,7 @@ const fetcher = async (url) => {
     throw error.response?.data?.message || 'Failed to load link.';
   }
 };
-console.log('referrer' , document.referrer || 'direct')
+alert('referrer' , document.referrer )
 
 
 const useRedirectLogic = () => { // Adding 't' here if it's not global
