@@ -19,7 +19,7 @@ const AnalyticsComponent = () => {
   
 
   function transformClicksForChart(details) {
-    console.log(details)
+    
     const dailyAggregates = {};
   
     details && details.forEach(click => {
@@ -49,7 +49,7 @@ const AnalyticsComponent = () => {
 
   useEffect(() => {
     setFormedClicks(transformClicksForChart(clicksAnalytics))
-    console.log(clicksAnalytics.countries)
+    console.log(urlAnalytics.countries)
    
   }, [isLoading])
 

@@ -16,62 +16,43 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  
 } from "@/components/ui/chart"
 
-// NOTE: This component assumes that the necessary UI components 
-// (Card, ChartContainer, etc.) are available via the provided paths.
+export function CountriesChart({ data }) {
+  // Add fill colors to the data and generate config dynamically
+  const chartData = React.useMemo(() => {
+    return data.map((item, index) => ({
+      ...item,
+      fill: `hsl(var(--chart-${(index % 5) + 1}))`,
+    }))
+  }, [data])
 
-/**
- * A donut chart component that displays categorical data (like browser usage)
- * with a total count displayed in the center.
- */
+  // Generate chart config dynamically based on data
+  const chartConfig = React.useMemo(() => {
+    const config = {
+      count: {
+        label: "Visitors",
+      },
+    }
+    
+    data.forEach((item, index) => {
+      config[item.name] = {
+        label: item.name,
+        color: `hsl(var(--chart-${(index % 5) + 1}))`,
+      }
+    })
+    
+    return config
+  }, [data])
 
-// === Sample Data (Replace with your actual data source) ===
-// const chartData = [
-//   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-//   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-//   { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-//   { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-//   { browser: "other", visitors: 190, fill: "var(--color-other)" },
-// ]
-
-// === Chart Configuration for Tooltip/Legend Colors ===
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "var(--chart-1)",
-  },
-  safari: {
-    label: "Safari",
-    color: "var(--chart-2)",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "var(--chart-3)",
-  },
-  edge: {
-    label: "Edge",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
-  },
-} 
-
-export function CountriesChart({data : chartData}) {
   const totalVisitors = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.count, 0)
-  }, [])
+  }, [chartData])
 
   return (
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut with Text</CardTitle>
+        <CardTitle>Visitors by Country</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
