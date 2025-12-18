@@ -20,11 +20,11 @@ import {
 
 // Define a color palette
 const COLORS = [
-  "(--chart-1)",
-  "(--chart-2)",
-  "(--chart-3)",
-  "(--chart-4)",
-  "(--chart-5)",
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+  "var(--chart-5)",
 ]
 
 export function CountriesChart({ data }) {
