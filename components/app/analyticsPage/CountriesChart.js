@@ -18,12 +18,21 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
+// Define a color palette
+const COLORS = [
+  "hsl(var(--chart-1))",
+  "hsl(var(--chart-2))",
+  "hsl(var(--chart-3))",
+  "hsl(var(--chart-4))",
+  "hsl(var(--chart-5))",
+]
+
 export function CountriesChart({ data }) {
-  // Add fill colors to the data and generate config dynamically
+  // Add fill colors to the data
   const chartData = React.useMemo(() => {
     return data.map((item, index) => ({
       ...item,
-      fill: `hsl(var(--chart-${(index % 5) + 1}))`,
+      fill: COLORS[index % COLORS.length],
     }))
   }, [data])
 
@@ -38,7 +47,7 @@ export function CountriesChart({ data }) {
     data.forEach((item, index) => {
       config[item.name] = {
         label: item.name,
-        color: `hsl(var(--chart-${(index % 5) + 1}))`,
+        color: COLORS[index % COLORS.length],
       }
     })
     
@@ -70,6 +79,7 @@ export function CountriesChart({ data }) {
               dataKey="count"
               nameKey="name"
               innerRadius={60}
+              outerRadius={80}
               strokeWidth={5}
             >
               <Label
