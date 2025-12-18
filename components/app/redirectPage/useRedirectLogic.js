@@ -21,6 +21,8 @@ const fetcher = async (url) => {
     throw error.response?.data?.message || 'Failed to load link.';
   }
 };
+console.log('referrer' , document.referrer || 'direct')
+
 
 const useRedirectLogic = () => { // Adding 't' here if it's not global
   const [passwordState, setPasswordState] = useState({
@@ -51,7 +53,6 @@ const useRedirectLogic = () => { // Adding 't' here if it's not global
   useEffect(() => {
     // Only run this logic once data is successfully fetched
     setReferrer(document.referrer)
-    console.log('referrer' , document.referrer || 'direct')
     if (data) {
       // Use optional chaining carefully, though SWR 'data' should be guaranteed here
       const isPasswordProtected = data?.requirePassword;
