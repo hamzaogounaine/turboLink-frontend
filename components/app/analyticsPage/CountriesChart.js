@@ -45,7 +45,7 @@ export function CountriesChart({ data }) {
     }
     
     data.forEach((item, index) => {
-      config[item.name] = {
+      config[index] = {
         label: item.name,
         color: COLORS[index % COLORS.length],
       }
