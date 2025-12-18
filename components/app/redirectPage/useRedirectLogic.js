@@ -21,7 +21,7 @@ const fetcher = async (url) => {
     throw error.response?.data?.message || 'Failed to load link.';
   }
 };
-alert('referrer' , document.referrer )
+
 
 
 const useRedirectLogic = () => { // Adding 't' here if it's not global
@@ -34,7 +34,6 @@ const useRedirectLogic = () => { // Adding 't' here if it's not global
   });
   
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const [referrer , setReferrer] = useState('')
   
   const { alias } = useParams();
   
@@ -52,7 +51,6 @@ const useRedirectLogic = () => { // Adding 't' here if it's not global
   // --- 2. SWR Side Effect (CRITICAL FIX: Use useEffect) ---
   useEffect(() => {
     // Only run this logic once data is successfully fetched
-    setReferrer(document.referrer)
     if (data) {
       // Use optional chaining carefully, though SWR 'data' should be guaranteed here
       const isPasswordProtected = data?.requirePassword;
@@ -117,7 +115,7 @@ const useRedirectLogic = () => { // Adding 't' here if it's not global
 
   const handleManualRedirect = () => {
     if (linkData?.short_url) {
-      api.post(`/url/analytics/${linkData.short_url}` , {referrer : referrer}); 
+      api.post(`/url/analytics/${linkData.short_url}` , {referrer : document.referrer || 'direct'}); 
     }
     window.location.href = linkData.redirect_url;
   };
