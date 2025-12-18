@@ -106,7 +106,7 @@ const AnalyticsComponent = () => {
           <section class="lg:col-span-3 bg-background rounded-xl shadow-lg p-5">
             <div class="flex justify-between items-center mb-4">
               <h3 class="text-lg font-semibold">Clicks Over Time</h3>
-              <span class="text-gray-400 cursor-pointer">❌</span>
+              
             </div>
             <div class="h-80   border border-gray-700 rounded-lg">
               {!formedClicks ? <p class="text-gray-500 italic flex justify-center h-full items-center">No Data Available for Clicks Over Time</p>
@@ -150,7 +150,7 @@ const AnalyticsComponent = () => {
           <div class="bg-background rounded-xl shadow-lg p-5 flex flex-col justify-center items-center h-64">
             <div class="w-full flex justify-between items-center mb-4">
               <h3 class="text-lg font-semibold">Referrers</h3>
-              <span class="text-gray-400 cursor-pointer">❌</span>
+              
             </div>
            {!urlAnalytics.referrers ? <div class="text-center flex-grow flex flex-col justify-center items-center">
               <span class="text-4xl mb-2 text-gray-500">↩️</span>
@@ -167,7 +167,7 @@ const AnalyticsComponent = () => {
           <div class="bg-background rounded-xl shadow-lg p-5 flex flex-col justify-center items-center h-64">
             <div class="w-full flex justify-between items-center mb-4">
               <h3 class="text-lg font-semibold">Browsers</h3>
-              <span class="text-gray-400 cursor-pointer">❌</span>
+              
             </div>
             <div class="text-center flex-grow flex flex-col justify-center items-center">
               {!urlAnalytics.browsers.length ? <><span class="text-4xl mb-2 text-gray-500">🌐</span>
@@ -183,7 +183,7 @@ const AnalyticsComponent = () => {
           <div class="bg-background rounded-xl shadow-lg p-5 flex flex-col justify-center items-center h-64">
             <div class="w-full flex justify-between items-center mb-4">
               <h3 class="text-lg font-semibold">Platforms</h3>
-              <span class="text-gray-400 cursor-pointer">❌</span>
+              
             </div>
             <div class="text-center flex-grow flex flex-col justify-center items-center">
              {!urlAnalytics.os.length ? <> <span class="text-4xl mb-2 text-gray-500">💻</span>
@@ -199,7 +199,7 @@ const AnalyticsComponent = () => {
           <div class="bg-background rounded-xl shadow-lg p-5 flex flex-col justify-center items-center h-64">
             <div class="w-full flex justify-between items-center mb-4">
               <h3 class="text-lg font-semibold">Countries</h3>
-              <span class="text-gray-400 cursor-pointer">❌</span>
+              
             </div>
             {/* <div class="text-center flex-grow flex flex-col justify-center items-center">
               <span class="text-4xl mb-2 text-gray-500">🌍</span>

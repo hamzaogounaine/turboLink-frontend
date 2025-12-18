@@ -20,11 +20,16 @@ import {
 
 // Define a color palette
 const COLORS = [
-  "#38BDF8", // cyan
-  "#22C55E", // green
+  "#38BDF8", // sky blue
+  "#22C55E", // emerald green
   "#EAB308", // yellow
+  "#F97316", // orange
   "#EF4444", // red
-  "#8B5CF6", // purple
+  "#A855F7", // purple
+  "#14B8A6", // teal
+  "#6366F1", // indigo
+  "#EC4899", // pink
+  "#F43F5E", // rose
 ]
 
 
@@ -60,17 +65,17 @@ export function CountriesChart({ data }) {
   }, [chartData])
 
   return (
-    <Card className="flex flex-col h-full">
-      <CardHeader className="items-center pb-0">
+    <Card className="flex flex-col h-full p-0 bg-transparent border-0 ">
+      {/* <CardHeader className="items-center pb-0  h-full">
         <CardTitle>Visitors by Country</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      </CardHeader> */}
+      <CardContent className="border-0 h-full">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto  max-h-[250px] "
         >
-          <PieChart>
+          <PieChart className="h-full">
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
@@ -116,14 +121,7 @@ export function CountriesChart({ data }) {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
+     
     </Card>
   )
 }
