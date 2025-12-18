@@ -20,12 +20,13 @@ import {
 
 // Define a color palette
 const COLORS = [
-  "var(--chart-1)",
-  "var(--chart-4)",
-  "var(--chart-2)",
-  "var(--chart-5)",
-  "var(--chart-3)",
+  "#38BDF8", // cyan
+  "#22C55E", // green
+  "#EAB308", // yellow
+  "#EF4444", // red
+  "#8B5CF6", // purple
 ]
+
 
 export function CountriesChart({ data }) {
   // Add fill colors to the data
