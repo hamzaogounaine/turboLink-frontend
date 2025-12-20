@@ -65,17 +65,17 @@ export function CountriesChart({ data }) {
   }, [chartData])
 
   return (
-    <Card className="flex flex-col h-full p-0 bg-transparent border-0 ">
+    <Card className="flex flex-col  p-0 bg-transparent border-0 ">
       {/* <CardHeader className="items-center pb-0  h-full">
         <CardTitle>Visitors by Country</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader> */}
-      <CardContent className="border-0 h-full">
+      <CardContent className="h-full min-h-[200px]">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto  max-h-[250px] "
+          className="mx-auto h-full max-h-[250px] "
         >
-          <PieChart className="h-full">
+          <PieChart className="">
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}

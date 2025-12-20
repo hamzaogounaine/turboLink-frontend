@@ -85,7 +85,7 @@ const useRedirectLogic = () => { // Adding 't' here if it's not global
       disabled = true;
     } else {
       // Use the generic translation key if 't' is available, otherwise use raw error
-      finalError = t ? t('errorSubtitle') : error; 
+      finalError = error; 
     }
   }
 
